@@ -31,7 +31,6 @@ class App extends React.Component {
       currentToken,
     });
   };
-
   render() {
     const { currentToken } = this.state;
     return (
