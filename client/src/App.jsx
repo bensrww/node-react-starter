@@ -1,4 +1,4 @@
-import { Layout, Menu, Typography } from 'antd';
+import { Layout, Menu, Typography, Button } from 'antd';
 import React from 'react';
 import { GetToken } from './pages';
 import './App.css';
@@ -26,6 +26,10 @@ class App extends React.Component {
     let res = await productService.getAll();
     console.log(res);
     this.setState({ products: res });
+  };
+
+  insertProducts = async () => {
+    let res = await productService.insertOneProduct();
   };
 
   renderProduct = (product) => {
@@ -63,6 +67,7 @@ class App extends React.Component {
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
             <GetToken getToken={this.genReadyToken} token={currentToken} />
+            <Button onClick={this.insertProducts}>haha</Button>
             <ul className="list">
               {products && products.length > 0 ? (
                 products.map((product) => this.renderProduct(product))
