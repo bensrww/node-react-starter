@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-export const tokenStatusEnum = {
+export const tokenStatus = {
   READY: 'READY',
   USED: 'USED',
   INVALID: 'INVALID',

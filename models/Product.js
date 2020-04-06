@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const productSchema = new Schema({
-  name: String,
-  description: String,
+const tokenSchema = new Schema({
+  value: String,
+  status: String,
+  timeStamp: String,
 });
 
-mongoose.model('products', productSchema);
+mongoose.model('tokens', tokenSchema);

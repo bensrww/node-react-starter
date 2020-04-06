@@ -1,5 +1,5 @@
-import { tokenStatusEnum } from '../constants';
-const { READY, USED, INVALID, PENDING } = tokenStatusEnum;
+import { tokenStatus } from '../constants';
+const { READY, USED, INVALID, PENDING } = tokenStatus;
 export default [
   {
     tokenValue: '111111',

@@ -2,12 +2,12 @@ import { Layout, Menu, Typography, Button } from 'antd';
 import React from 'react';
 import { GetToken } from './pages';
 import './App.css';
-import tokens from './mockData/tokens';
-import { tokenStatusEnum } from './constants';
+import mockTokens from './mockData/tokens';
+import { tokenStatus } from './constants';
 import _ from 'lodash';
-import productService from './services/productService';
+import tokenService from './services/tokenService';
 
-const { READY, USED, INVALID, PENDING } = tokenStatusEnum;
+const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
 class App extends React.Component {
@@ -15,28 +15,35 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      tokens,
+      tokens: null,
       currentToken: null,
-      products: null,
     };
-    this.getProducts();
+    this.getAllTokens();
   }
 
-  getProducts = async () => {
-    let res = await productService.getAll();
+  getAllTokens = async () => {
+    let res = await tokenService.getOneReadyToken();
     console.log(res);
-    this.setState({ products: res });
+    this.setState({ tokens: res });
   };
 
-  insertProducts = async () => {
-    let res = await productService.insertOneProduct();
+  getReadyToken = async () => {
+    let res = await tokenService.getOneReadyToken();
+    console.log(res);
+    this.setState({ oneToken: res });
   };
 
-  renderProduct = (product) => {
+  insertTokens = async () => {
+    const randomNum = Math.floor(Math.random() * 999999 + 1).toString(10);
+    let res = await tokenService.insertTokens(randomNum);
+  };
+
+  renderToken = (token) => {
     return (
-      <li key={product._id} className="list__item product">
-        <h3 className="product__name">{product.name}</h3>
-        <p className="product__description">{product.description}</p>
+      <li key={token._id} className="list__item product">
+        <h3 className="product__name">{token.value}</h3>
+        <p className="product__description">{token.status}</p>
+        <p className="product__description">{token.timeStamp}</p>
       </li>
     );
   };
@@ -53,8 +60,9 @@ class App extends React.Component {
       currentToken,
     });
   };
+
   render() {
-    const { currentToken, products } = this.state;
+    const { currentToken, tokens } = this.state;
     return (
       <Layout className="top-layer">
         <Header>
@@ -67,10 +75,10 @@ class App extends React.Component {
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
             <GetToken getToken={this.genReadyToken} token={currentToken} />
-            <Button onClick={this.insertProducts}>haha</Button>
+            <Button onClick={this.insertTokens}>haha</Button>
             <ul className="list">
-              {products && products.length > 0 ? (
-                products.map((product) => this.renderProduct(product))
+              {tokens && tokens.length > 0 ? (
+                tokens.map((token) => this.renderToken(token))
               ) : (
                 <p>No products found</p>
               )}
