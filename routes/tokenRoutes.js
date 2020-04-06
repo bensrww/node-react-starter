@@ -1,11 +1,31 @@
 const mongoose = require('mongoose');
 
+const tokenStatus = {
+  READY: 'READY',
+  USED: 'USED',
+  INVALID: 'INVALID',
+  PENDING: 'PENDING',
+};
+
+const { READY } = tokenStatus;
+
 const Token = mongoose.model('tokens');
 
 module.exports = (app) => {
-  app.get(`/api/token`, async (req, res) => {
-    let tokens = await Token.find();
+  app.get('/api/token', async (req, res) => {
+    const tokens = await Token.find();
     return res.status(200).send(tokens);
+  });
+
+  app.get('/api/randomToken', async (req, res) => {
+    console.log('tokenStatus', tokenStatus);
+    const allReadyTokens = await Token.find(
+      { status: READY },
+      { _id: 0, __v: 0 },
+    );
+    const randomToken =
+      allReadyTokens[Math.floor(Math.random() * allReadyTokens.length)];
+    return res.status(200).send(randomToken);
   });
 
   app.post(`/api/token`, async (req, res) => {

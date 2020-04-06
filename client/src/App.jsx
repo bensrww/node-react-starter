@@ -22,7 +22,7 @@ class App extends React.Component {
   }
 
   getAllTokens = async () => {
-    let res = await tokenService.getOneReadyToken();
+    let res = await tokenService.getTokens();
     console.log(res);
     this.setState({ tokens: res });
   };
@@ -30,12 +30,15 @@ class App extends React.Component {
   getReadyToken = async () => {
     let res = await tokenService.getOneReadyToken();
     console.log(res);
-    this.setState({ oneToken: res });
+    if (res && res.value) {
+      this.setState({ currentToken: res.value });
+    }
   };
 
   insertTokens = async () => {
-    const randomNum = Math.floor(Math.random() * 999999 + 1).toString(10);
-    let res = await tokenService.insertTokens(randomNum);
+    const randomNum = Math.floor(Math.random() * 899999 + 100000).toString(10);
+    await tokenService.insertTokens(randomNum);
+    this.getAllTokens();
   };
 
   renderToken = (token) => {
@@ -46,19 +49,6 @@ class App extends React.Component {
         <p className="product__description">{token.timeStamp}</p>
       </li>
     );
-  };
-
-  genReadyToken = () => {
-    const { tokens } = this.state;
-    const readyTokenObjs = tokens.filter((value) => {
-      return value.status === READY;
-    });
-    const currentToken = !_.isEmpty(readyTokenObjs)
-      ? readyTokenObjs[0].tokenValue
-      : null;
-    this.setState({
-      currentToken,
-    });
   };
 
   render() {
@@ -74,7 +64,7 @@ class App extends React.Component {
         </Header>
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
-            <GetToken getToken={this.genReadyToken} token={currentToken} />
+            <GetToken getToken={this.getReadyToken} token={currentToken} />
             <Button onClick={this.insertTokens}>haha</Button>
             <ul className="list">
               {tokens && tokens.length > 0 ? (
