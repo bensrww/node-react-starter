@@ -28,10 +28,14 @@ class App extends React.Component {
   };
 
   getReadyToken = async () => {
-    let res = await tokenService.getOneReadyToken();
-    console.log(res);
-    if (res && res.value) {
-      this.setState({ currentToken: res.value });
+    try {
+      const res = await tokenService.getOneReadyToken();
+      console.log('Get ready token ok', res);
+      if (res && res.value) {
+        this.setState({ currentToken: res.value });
+      }
+    } catch (err) {
+      console.log('Get ready token error', err.response.data.errorMsg);
     }
   };
 

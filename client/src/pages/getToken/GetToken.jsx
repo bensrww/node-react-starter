@@ -20,12 +20,12 @@ InitialGetButton.defaultProps = {
 
 const ResponseButtons = ({ getToken }) => (
   <>
-    <Col span={{ md: 12 }}>
+    <Col span={{ xs: 24, sm: 12 }}>
       <Button type="primary" className="token-button" onClick={getToken}>
         YES, IT IS!
       </Button>
     </Col>
-    <Col span={{ md: 12 }}>
+    <Col span={{ xs: 24, sm: 12 }}>
       <Button onClick={getToken} className="token-button">
         NO, SO SAD!
       </Button>
@@ -48,7 +48,7 @@ const GetToken = (props) => {
           <Text>{token}</Text>
         </Col>
       </Row>
-      <Row justify="center" gutter={{ md: 24 }}>
+      <Row justify="center" gutter={[24, 24]}>
         {token ? (
           <ResponseButtons getToken={getToken} />
         ) : (

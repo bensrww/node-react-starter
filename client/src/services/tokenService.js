@@ -8,9 +8,9 @@ export default {
     return res.data || [];
   },
 
-  getOneReadyToken: async () => {
-    let res = await axios.get(`/api/randomToken`);
-    return res.data || {};
+  getOneReadyToken: () => {
+    const res = axios.get(`/api/randomToken`);
+    return res;
   },
 
   insertTokens: async (tokenValue) => {
