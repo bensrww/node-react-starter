@@ -21,3 +21,35 @@
 .token-button {
   min-width: 200px;
 }
+
+.token-list {
+  display: inline-block;
+}
+
+.cross-text {
+  text-decoration: line-through;
+}
+
+.list-button-first {
+  margin: 0px 4px 0px 9px;
+}
+
+.list-button {
+  margin: 0px 4px;
+}
+
+.button-confirm {
+  background-color: #1890ff;
+  color: white;
+}
+
+.button-error {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.list-copy-icon i {
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+}

@@ -45,7 +45,7 @@ const GetToken = (props) => {
     <div>
       <Row>
         <Col span={24}>
-          <Text>{token}</Text>
+          {token ? <Text copyable>{token}</Text> : 'No tokens'}
         </Col>
       </Row>
       <Row justify="center" gutter={[24, 24]}>

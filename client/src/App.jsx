@@ -1,4 +1,4 @@
-import { Layout, Menu, Typography, Button, Modal } from 'antd';
+import { Layout, Menu, Typography, Button, Modal, Tabs, Icon } from 'antd';
 import React from 'react';
 import { GetToken } from './pages';
 import './App.css';
@@ -10,7 +10,8 @@ import { getSafe } from './utils/helpers';
 
 const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
+const { TabPane } = Tabs;
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -53,11 +54,29 @@ class App extends React.Component {
   };
 
   renderToken = (token) => {
+    let className = '';
+    if (token.status !== tokenStatus.READY) className = 'cross-text';
     return (
-      <li key={token._id} className="list__item product">
-        <h3 className="product__name">{token.value}</h3>
-        <p className="product__description">{token.status}</p>
-        <p className="product__description">{token.timeStamp}</p>
+      <li key={token._id}>
+        <Paragraph
+          style={{ display: 'inline-block' }}
+          className={`${className} list-copy-icon`}
+          copyable={{ text: token.value }}
+        >
+          <Text mark>{token.value}</Text> {token.status} {token.timeStamp}
+        </Paragraph>
+        <Button
+          className="list-button-first button-confirm"
+          size="small"
+          shape="circle"
+          icon="check"
+        />
+        <Button
+          className="list-button button-error"
+          size="small"
+          shape="circle"
+          icon="close"
+        />
       </li>
     );
   };
@@ -75,15 +94,23 @@ class App extends React.Component {
         </Header>
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
-            <GetToken getToken={this.getReadyToken} token={currentToken} />
-            <Button onClick={this.insertTokens}>haha</Button>
-            <ul className="list">
-              {tokens && tokens.length > 0 ? (
-                tokens.map((token) => this.renderToken(token))
-              ) : (
-                <p>No products found</p>
-              )}
-            </ul>
+            <Tabs defaultActiveKey="getTokens">
+              <TabPane tab="Get Tokens" key="getTokens">
+                <GetToken getToken={this.getReadyToken} token={currentToken} />
+              </TabPane>
+              <TabPane tab="List of Tokens" key="listOfTokens">
+                <ul className="token-list">
+                  {tokens && tokens.length > 0 ? (
+                    tokens.map((token) => this.renderToken(token))
+                  ) : (
+                    <p>No products found</p>
+                  )}
+                </ul>
+              </TabPane>
+              <TabPane tab="Generate Tokens" key="generateTokens">
+                <Button onClick={this.insertTokens}>haha</Button>
+              </TabPane>
+            </Tabs>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Made by Ben Chong 2020</Footer>
