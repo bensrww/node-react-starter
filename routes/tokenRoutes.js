@@ -27,7 +27,12 @@ module.exports = (app) => {
       console.log('sent token', randomToken);
       return res.status(200).send(randomToken);
     }
-    return res.status(500).send({ errorMsg: 'No data found' });
+    return res
+      .status(500)
+      .send({
+        errorMsg:
+          'Not enough tokens available, please contact responsible person to generate',
+      });
   });
 
   app.post(`/api/token`, async (req, res) => {

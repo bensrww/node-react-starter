@@ -1,4 +1,4 @@
-import { Layout, Menu, Typography, Button } from 'antd';
+import { Layout, Menu, Typography, Button, Modal } from 'antd';
 import React from 'react';
 import { GetToken } from './pages';
 import './App.css';
@@ -6,6 +6,7 @@ import mockTokens from './mockData/tokens';
 import { tokenStatus } from './constants';
 import _ from 'lodash';
 import tokenService from './services/tokenService';
+import { getSafe } from './utils/helpers';
 
 const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
@@ -21,6 +22,13 @@ class App extends React.Component {
     this.getAllTokens();
   }
 
+  displayErrModal = (msg) => {
+    Modal.error({
+      title: 'Error',
+      content: msg,
+    });
+  };
+
   getAllTokens = async () => {
     let res = await tokenService.getTokens();
     console.log(res);
@@ -31,11 +39,10 @@ class App extends React.Component {
     try {
       const res = await tokenService.getOneReadyToken();
       console.log('Get ready token ok', res);
-      if (res && res.value) {
-        this.setState({ currentToken: res.value });
-      }
+      if (getSafe(() => res.data.value, null))
+        this.setState({ currentToken: res.data.value });
     } catch (err) {
-      console.log('Get ready token error', err.response.data.errorMsg);
+      this.displayErrModal(err.response.data.errorMsg);
     }
   };
 
