@@ -7,6 +7,7 @@ import { tokenStatus } from './constants';
 import _ from 'lodash';
 import tokenService from './services/tokenService';
 import { getSafe } from './utils/helpers';
+import AddToken from './pages/addToken/AddToken';
 
 const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
@@ -18,10 +19,14 @@ class App extends React.Component {
 
     this.state = {
       tokens: null,
-      currentToken: null,
+      currentToken: {},
     };
     this.getAllTokens();
   }
+
+  updateToken = (id, status) => {
+    console.log('update token', id, status);
+  };
 
   displayErrModal = (msg) => {
     Modal.error({
@@ -41,7 +46,7 @@ class App extends React.Component {
       const res = await tokenService.getOneReadyToken();
       console.log('Get ready token ok', res);
       if (getSafe(() => res.data.value, null))
-        this.setState({ currentToken: res.data.value });
+        this.setState({ currentToken: res.data });
     } catch (err) {
       this.displayErrModal(err.response.data.errorMsg);
     }
@@ -101,7 +106,11 @@ class App extends React.Component {
           <div className="site-layout-content">
             <Tabs defaultActiveKey="getTokens">
               <TabPane tab="Get Tokens" key="getTokens">
-                <GetToken getToken={this.getReadyToken} token={currentToken} />
+                <GetToken
+                  updateToken={this.updateToken}
+                  getToken={this.getReadyToken}
+                  token={currentToken}
+                />
               </TabPane>
               <TabPane tab="List of Tokens" key="listOfTokens">
                 <ul className="token-list">
@@ -113,7 +122,7 @@ class App extends React.Component {
                 </ul>
               </TabPane>
               <TabPane tab="Generate Tokens" key="generateTokens">
-                <Button onClick={this.insertTokens}>haha</Button>
+                <AddToken insertTokens={this.insertTokens} />
               </TabPane>
             </Tabs>
           </div>

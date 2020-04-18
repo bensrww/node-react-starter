@@ -54,3 +54,7 @@
   position: relative;
   top: 3px;
 }
+
+.get-token-text {
+  font-size: 100px;
+}
