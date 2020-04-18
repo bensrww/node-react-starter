@@ -55,28 +55,33 @@ class App extends React.Component {
 
   renderToken = (token) => {
     let className = '';
-    if (token.status !== tokenStatus.READY) className = 'cross-text';
+    const isTokenReady = token.status !== tokenStatus.READY;
+    if (isTokenReady) className = 'cross-text';
     return (
       <li key={token._id}>
         <Paragraph
           style={{ display: 'inline-block' }}
           className={`${className} list-copy-icon`}
-          copyable={{ text: token.value }}
+          copyable={isTokenReady ? false : { text: token.value }}
         >
           <Text mark>{token.value}</Text> {token.status} {token.timeStamp}
         </Paragraph>
         <Button
-          className="list-button-first button-confirm"
+          className="list-button first button-confirm"
           size="small"
-          shape="circle"
           icon="check"
-        />
+          disabled={isTokenReady}
+        >
+          Token OK
+        </Button>
         <Button
           className="list-button button-error"
           size="small"
-          shape="circle"
           icon="close"
-        />
+          disabled={isTokenReady}
+        >
+          Token Invalid
+        </Button>
       </li>
     );
   };
