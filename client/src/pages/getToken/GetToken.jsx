@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Typography } from 'antd';
+import { Row, Col, Button, Typography, Tooltip } from 'antd';
 import _ from 'lodash';
 import { tokenStatus } from '../../constants';
 
@@ -18,13 +18,15 @@ const GetToken = (props) => {
   const ResponseButtons = () => (
     <>
       <Col span={{ xs: 24, sm: 12 }}>
-        <Button
-          type="primary"
-          className="token-button button-confirm"
-          onClick={updateToken(_id, tokenStatus.USED)}
-        >
-          This token works!
-        </Button>
+        <Tooltip title="Thanks for your feedback!" trigger="click">
+          <Button
+            type="primary"
+            className="token-button button-confirm"
+            onClick={updateToken(_id, tokenStatus.USED)}
+          >
+            This token works!
+          </Button>
+        </Tooltip>
       </Col>
       <Col span={{ xs: 24, sm: 12 }}>
         <Button
