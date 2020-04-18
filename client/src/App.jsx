@@ -1,4 +1,14 @@
-import { Layout, Menu, Typography, Button, Modal, Tabs, Icon } from 'antd';
+import {
+  Layout,
+  Menu,
+  Typography,
+  Button,
+  Modal,
+  Tabs,
+  Icon,
+  Row,
+  Col,
+} from 'antd';
 import React from 'react';
 import { GetToken } from './pages';
 import './App.css';
@@ -63,30 +73,36 @@ class App extends React.Component {
     const isTokenReady = token.status !== tokenStatus.READY;
     if (isTokenReady) className = 'cross-text';
     return (
-      <li key={token._id}>
-        <Paragraph
-          style={{ display: 'inline-block' }}
-          className={`${className} list-copy-icon`}
-          copyable={isTokenReady ? false : { text: token.value }}
-        >
-          <Text mark>{token.value}</Text> {token.status} {token.timeStamp}
-        </Paragraph>
-        <Button
-          className="list-button first button-confirm"
-          size="small"
-          icon="check"
-          disabled={isTokenReady}
-        >
-          Token OK
-        </Button>
-        <Button
-          className="list-button button-error"
-          size="small"
-          icon="close"
-          disabled={isTokenReady}
-        >
-          Token Invalid
-        </Button>
+      <li className="token-list-li" key={token._id}>
+        <Row>
+          <Col sm={{ span: 24 }} md={{ span: 12 }}>
+            <Paragraph
+              style={{ display: 'inline-block', margin: 0 }}
+              className={`${className} list-copy-icon`}
+              copyable={isTokenReady ? false : { text: token.value }}
+            >
+              <Text mark>{token.value}</Text> {token.status} {token.timeStamp}
+            </Paragraph>
+          </Col>
+          <Col sm={{ span: 24 }} md={{ span: 12 }}>
+            <Button
+              className="list-button first button-confirm"
+              size="small"
+              icon="check"
+              disabled={isTokenReady}
+            >
+              Token OK
+            </Button>
+            <Button
+              className="list-button button-error"
+              size="small"
+              icon="close"
+              disabled={isTokenReady}
+            >
+              Token Invalid
+            </Button>
+          </Col>
+        </Row>
       </li>
     );
   };
