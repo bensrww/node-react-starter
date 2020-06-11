@@ -64,11 +64,3 @@
     font-size: 30px;
   }
 }
-
-.token-list-li {
-  margin: 3px;
-}
-
-.token-list-li:nth-child(even) {
-  background-color: rgb(216, 209, 209);
-}
