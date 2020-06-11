@@ -35,13 +35,6 @@ class App extends React.Component {
     this.getAllTokens();
   }
 
-  displayErrModal = (msg) => {
-    Modal.error({
-      title: 'Error',
-      content: msg,
-    });
-  };
-
   getAllTokens = async () => {
     let res = await tokenService.getTokens();
     console.log(res);
