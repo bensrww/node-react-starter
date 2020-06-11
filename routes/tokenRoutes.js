@@ -35,7 +35,13 @@ module.exports = (app) => {
 
   app.post('/api/updateTokenStatus', async (req, res) => {
     console.log('updateToken req body', req.body);
-    let token = await Token.findByIdAndUpdate();
+    if (req.body && req.body.id) {
+      const { id, status } = req.body;
+      let token = await Token.findByIdAndUpdate(id, {
+        status,
+      });
+      return res.status(200).send();
+    }
   });
 
   app.post(`/api/token`, async (req, res) => {

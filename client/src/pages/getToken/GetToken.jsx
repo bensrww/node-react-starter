@@ -37,13 +37,13 @@ class GetToken extends React.Component {
   };
 
   updateAndGetNewToken = () => {
-    const { _id } = this.state;
+    const { _id } = this.state.token;
     updateToken(_id, tokenStatus.INVALID);
     getReadyToken();
   };
 
   ResponseButtons = () => {
-    const { _id } = this.state;
+    const { _id } = this.state.token;
     return (
       <>
         <Col span={{ xs: 24, sm: 12 }}>
