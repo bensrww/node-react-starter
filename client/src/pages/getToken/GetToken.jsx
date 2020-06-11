@@ -21,8 +21,19 @@ class GetToken extends React.Component {
     };
   }
 
-  getReadyToken = () => {
-    getReadyToken();
+  getReadyToken = async () => {
+    const resp = await getReadyToken();
+    console.log('getReadyToken resp', resp);
+    if (resp && resp.currentToken) {
+      const { _id, timeStamp, value } = resp.currentToken;
+      this.setState({
+        token: {
+          _id,
+          timeStamp,
+          value,
+        },
+      });
+    }
   };
 
   updateAndGetNewToken = () => {
@@ -40,7 +51,7 @@ class GetToken extends React.Component {
             <Button
               type="primary"
               className="token-button button-confirm"
-              onClick={updateToken(_id, tokenStatus.USED)}
+              onClick={() => updateToken(_id, tokenStatus.USED)}
             >
               This token works!
             </Button>
@@ -48,7 +59,7 @@ class GetToken extends React.Component {
         </Col>
         <Col span={{ xs: 24, sm: 12 }}>
           <Button
-            onClick={this.updateAndGetNewToken}
+            onClick={() => this.updateAndGetNewToken}
             className="token-button button-error"
           >
             This token doesn't work...

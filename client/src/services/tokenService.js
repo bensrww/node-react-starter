@@ -13,6 +13,11 @@ export default {
     return res;
   },
 
+  updateTokenStatus: (id, status) => {
+    const res = axios.post(`/api/updateTokenStatus`, { id, status });
+    return res;
+  },
+
   insertTokens: async (tokenValue) => {
     const reqBody = {
       value: tokenValue,
