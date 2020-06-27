@@ -10,15 +10,13 @@ import {
   Col,
 } from 'antd';
 import React from 'react';
-import { GetToken } from './pages';
+import { GetToken, AddToken, ListToken } from './pages';
 import './App.css';
 import mockTokens from './mockData/tokens';
 import { tokenStatus } from './constants';
 import _ from 'lodash';
 import tokenService from './services/tokenService';
 import { getSafe } from './utils/helpers';
-import AddToken from './pages/addToken/AddToken';
-import ListToken from './pages/listToken/ListToken';
 
 const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
