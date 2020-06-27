@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Typography, Button } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
+import { updateToken } from '../../utils/helpers';
 
 const { Text, Paragraph } = Typography;
 
@@ -28,6 +29,7 @@ export default class ListToken extends Component {
               size="small"
               icon="check"
               disabled={isTokenReady}
+              onClick={() => updateToken(token._id, tokenStatus.USED)}
             >
               Token OK
             </Button>
@@ -36,6 +38,7 @@ export default class ListToken extends Component {
               size="small"
               icon="close"
               disabled={isTokenReady}
+              onClick={() => updateToken(token._id, tokenStatus.INVALID)}
             >
               Token Invalid
             </Button>
