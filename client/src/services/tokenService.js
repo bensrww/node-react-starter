@@ -18,13 +18,14 @@ export default {
     return res;
   },
 
-  insertTokens: async (tokenValue) => {
-    const reqBody = {
-      value: tokenValue,
-      status: READY,
-      timeStamp: moment().format('DD/MM/YYYY hh:mm'),
-    };
-    let res = await axios.post(`/api/token`, reqBody);
+  insertTokens: async (tokenValues) => {
+    const reqBody = { tokenValues };
+    console.log('reqBody', reqBody);
+    let res = await axios.post(`/api/token`, reqBody, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     return res.data || [];
   },
 };

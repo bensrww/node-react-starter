@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const tokenStatus = {
   READY: 'READY',
@@ -45,11 +46,20 @@ module.exports = (app) => {
   });
 
   app.post(`/api/token`, async (req, res) => {
-    console.log('post body', req.body);
-    const token = await Token.create(req.body);
+    console.log('post body', req, req.body);
+    const tokens = req.body.tokenValues.split(' ');
+    const promises = tokens.map((tokenValue) => {
+      const obj = {
+        value: tokenValue,
+        status: READY,
+        timeStamp: moment().format('DD/MM/YYYY hh:mm'),
+      };
+      return Token.create(obj);
+    });
+    const resp = await Promise.all(promises);
     return res.status(201).send({
       error: false,
-      token,
+      resp,
     });
   });
 
