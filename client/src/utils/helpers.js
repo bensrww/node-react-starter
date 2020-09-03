@@ -14,6 +14,12 @@ export const updateToken = async (id, status) => {
   console.log('update token', id, status, res);
 };
 
+export const getAllTokens = async () => {
+  let res = await tokenService.getTokens();
+  console.log('getAllTokens', res);
+  return res;
+};
+
 export const getReadyToken = async () => {
   const displayErrModal = (msg) => {
     Modal.error({

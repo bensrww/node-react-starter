@@ -59,7 +59,7 @@ class GetToken extends React.Component {
         </Col>
         <Col span={{ xs: 24, sm: 12 }}>
           <Button
-            onClick={() => this.updateAndGetNewToken}
+            onClick={() => this.updateAndGetNewToken()}
             className="token-button button-error"
           >
             This token doesn't work...

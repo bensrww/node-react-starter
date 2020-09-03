@@ -1,2 +1,5 @@
 import GetToken from './getToken';
-export { GetToken };
+import AddToken from './addToken';
+import ListToken from './listToken';
+
+export { GetToken, AddToken, ListToken };
