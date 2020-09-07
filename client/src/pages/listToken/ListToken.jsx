@@ -32,7 +32,7 @@ export default class ListToken extends Component {
 
   updateTokenStatus = async (id, status) => {
     try {
-      const updateResp = await updateToken(id, tokenStatus.USED);
+      const updateResp = await updateToken(id, status);
       const allTokensResp = await getAllTokens();
       this.setState({ tokens: allTokensResp });
     } catch (err) {
