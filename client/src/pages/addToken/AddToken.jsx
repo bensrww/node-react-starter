@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Modal } from 'antd';
 import tokenService from '../../services/tokenService';
 
 export class AddToken extends Component {
@@ -11,7 +11,10 @@ export class AddToken extends Component {
   };
 
   deleteAllTokens = () => {
-    tokenService.deleteAllTokens();
+    Modal.warning({
+      title: 'Are you sure?',
+      onOk: tokenService.deleteAllTokens,
+    });
   };
 
   render() {
