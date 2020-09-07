@@ -28,4 +28,9 @@ export default {
     });
     return res.data || [];
   },
+
+  deleteAllTokens: async () => {
+    const res = await axios.delete(`/api/deleteAllTokens`);
+    return res.data || '';
+  },
 };

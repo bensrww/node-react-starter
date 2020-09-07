@@ -38,3 +38,9 @@ export const getReadyToken = async () => {
     displayErrModal(err.response.data.errorMsg);
   }
 };
+
+export const clearAllToken = async () => {
+  let res = await tokenService.deleteAllTokens();
+  console.log('deleteAllTokens', res);
+  return res;
+};

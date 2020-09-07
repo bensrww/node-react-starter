@@ -84,4 +84,13 @@ module.exports = (app) => {
       token,
     });
   });
+
+  app.delete(`/api/deleteAllTokens`, async (req, res) => {
+    const token = await Token.deleteMany();
+
+    return res.status(202).send({
+      error: false,
+      token,
+    });
+  });
 };

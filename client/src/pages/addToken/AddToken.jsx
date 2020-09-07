@@ -9,13 +9,21 @@ export class AddToken extends Component {
     console.log('form', form);
     tokenService.insertTokens(getFieldValue('tokenValue'));
   };
+
+  deleteAllTokens = () => {
+    tokenService.deleteAllTokens();
+  };
+
   render() {
     const { insertTokens, form } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Form>
         <Form.Item>{getFieldDecorator('tokenValue')(<Input />)}</Form.Item>
-        <Button onClick={this.handleInsertToken}>haha</Button>
+        <Button onClick={this.handleInsertToken}>Insert Tokens</Button>
+        <Button type="danger" onClick={this.deleteAllTokens}>
+          Delete All Tokens
+        </Button>
       </Form>
     );
   }
