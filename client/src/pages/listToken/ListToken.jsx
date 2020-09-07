@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Typography, Button } from 'antd';
+import { Row, Col, Typography, Button, Modal } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
 import { updateToken, getAllTokens } from '../../utils/helpers';
@@ -20,6 +20,19 @@ export default class ListToken extends Component {
       this.setState({ tokens: value });
     });
   }
+
+  updateTokenStatus = async (id, status) => {
+    try {
+      const updateResp = await updateToken(id, tokenStatus.USED);
+      const allTokensResp = await getAllTokens();
+      this.setState({ tokens: allTokensResp });
+    } catch (err) {
+      Modal.error({
+        title: 'Error',
+        content: err,
+      });
+    }
+  };
 
   renderToken = (token) => {
     let className = '';
@@ -43,7 +56,9 @@ export default class ListToken extends Component {
               size="small"
               icon="check"
               disabled={isTokenReady}
-              onClick={() => updateToken(token._id, tokenStatus.USED)}
+              onClick={() =>
+                this.updateTokenStatus(token._id, tokenStatus.USED)
+              }
             >
               Token OK
             </Button>
@@ -52,7 +67,9 @@ export default class ListToken extends Component {
               size="small"
               icon="close"
               disabled={isTokenReady}
-              onClick={() => updateToken(token._id, tokenStatus.INVALID)}
+              onClick={() =>
+                this.updateTokenStatus(token._id, tokenStatus.INVALID)
+              }
             >
               Token Invalid
             </Button>
