@@ -22,7 +22,9 @@ export class AddToken extends Component {
     const { getFieldDecorator } = form;
     return (
       <Form>
-        <Form.Item>{getFieldDecorator('tokenValue')(<Input />)}</Form.Item>
+        <Form.Item>
+          {getFieldDecorator('tokenValue')(<Input.TextArea />)}
+        </Form.Item>
         <Button onClick={this.handleInsertToken}>Insert Tokens</Button>
         <Button type="danger" onClick={this.deleteAllTokens}>
           Delete All Tokens
