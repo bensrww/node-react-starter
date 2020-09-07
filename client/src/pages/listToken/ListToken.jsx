@@ -23,8 +23,10 @@ export default class ListToken extends Component {
 
   componentDidUpdate() {
     const resp = getAllTokens();
+    console.log('listToken resp', resp);
     resp.then((value) => {
-      this.setState({ tokens: value });
+      if (value.toString() !== this.state.tokens.toString())
+        this.setState({ tokens: value });
     });
   }
 
