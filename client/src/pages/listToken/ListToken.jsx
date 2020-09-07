@@ -21,6 +21,13 @@ export default class ListToken extends Component {
     });
   }
 
+  componentDidUpdate() {
+    const resp = getAllTokens();
+    resp.then((value) => {
+      this.setState({ tokens: value });
+    });
+  }
+
   updateTokenStatus = async (id, status) => {
     try {
       const updateResp = await updateToken(id, tokenStatus.USED);

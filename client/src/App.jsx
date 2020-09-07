@@ -27,8 +27,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      tokens: null,
-      currentToken: {},
+      dummyListTokenProp: true, // force to call componentDidMount in ListTokens
     };
   }
 
@@ -37,8 +36,15 @@ class App extends React.Component {
     await tokenService.insertTokens(randomNum);
   };
 
+  handleTabChange = (activeKey) => {
+    if (activeKey === 'listOfTokens')
+      this.setState((prevState) => ({
+        dummyListTokenProp: !prevState.dummyListTokenProp,
+      }));
+  };
+
   render() {
-    const { currentToken, tokens } = this.state;
+    const { dummyListTokenProp } = this.state;
     return (
       <Layout className="top-layer">
         <Header>
@@ -50,12 +56,12 @@ class App extends React.Component {
         </Header>
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
-            <Tabs defaultActiveKey="getTokens">
+            <Tabs defaultActiveKey="getTokens" onChange={this.handleTabChange}>
               <TabPane tab="Get Tokens" key="getTokens">
                 <GetToken />
               </TabPane>
               <TabPane tab="List of Tokens" key="listOfTokens">
-                <ListToken />
+                <ListToken dummyProp={dummyListTokenProp} />
               </TabPane>
               <TabPane tab="Generate Tokens" key="generateTokens">
                 <AddToken insertTokens={this.insertTokens} />
