@@ -56,7 +56,12 @@ export default class ListToken extends Component {
               className={`${className} list-copy-icon`}
               copyable={isTokenReady ? false : { text: token.value }}
             >
-              <Text mark>{token.value}</Text> {token.status} {token.timeStamp}
+              <Text className="token-text" mark>
+                {token.value}
+              </Text>{' '}
+              <div className="token-extra-info">
+                {token.status} {token.timeStamp}
+              </div>
             </Paragraph>
           </Col>
           <Col sm={{ span: 24 }} md={{ span: 12 }}>
