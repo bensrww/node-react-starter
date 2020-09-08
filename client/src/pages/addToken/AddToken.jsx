@@ -1,13 +1,27 @@
 import React, { Component } from 'react';
-import { Button, Input, Form, Modal } from 'antd';
+import { Button, Input, Form, Modal, Spin } from 'antd';
 import tokenService from '../../services/tokenService';
 
 export class AddToken extends Component {
-  handleInsertToken = () => {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      spinning: false,
+    };
+  }
+
+  handleInsertToken = async () => {
+    this.setState({
+      spinning: true,
+    });
     const { form } = this.props;
     const { getFieldValue } = form;
     console.log('form', form);
-    tokenService.insertTokens(getFieldValue('tokenValue'));
+    await tokenService.insertTokens(getFieldValue('tokenValue'));
+    this.setState({
+      spinning: false,
+    });
   };
 
   deleteAllTokens = () => {
@@ -19,16 +33,19 @@ export class AddToken extends Component {
 
   render() {
     const { insertTokens, form } = this.props;
+    const { spinning } = this.state;
     const { getFieldDecorator } = form;
     return (
       <Form>
-        <Form.Item>
-          {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
-        </Form.Item>
-        <Button onClick={this.handleInsertToken}>Insert Tokens</Button>
-        <Button type="danger" onClick={this.deleteAllTokens}>
-          Delete All Tokens
-        </Button>
+        <Spin spinning={spinning}>
+          <Form.Item>
+            {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
+          </Form.Item>
+          <Button onClick={this.handleInsertToken}>Insert Tokens</Button>
+          <Button type="danger" onClick={this.deleteAllTokens}>
+            Delete All Tokens
+          </Button>
+        </Spin>
       </Form>
     );
   }

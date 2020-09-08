@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Typography, Button, Modal } from 'antd';
+import { Row, Col, Typography, Button, Modal, Spin } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
 import { updateToken, getAllTokens } from '../../utils/helpers';
@@ -11,13 +11,15 @@ export default class ListToken extends Component {
     super(props);
     this.state = {
       tokens: [],
+      spinning: true,
     };
   }
 
   componentDidMount() {
+    this.setState({ spinning: true });
     const resp = getAllTokens();
     resp.then((value) => {
-      this.setState({ tokens: value });
+      this.setState({ tokens: value, spinning: false });
     });
   }
 
@@ -26,15 +28,16 @@ export default class ListToken extends Component {
     console.log('listToken resp', resp);
     resp.then((value) => {
       if (value.toString() !== this.state.tokens.toString())
-        this.setState({ tokens: value });
+        this.setState({ tokens: value, spinning: false });
     });
   }
 
   updateTokenStatus = async (id, status) => {
     try {
+      this.setState({ spinning: true });
       const updateResp = await updateToken(id, status);
       const allTokensResp = await getAllTokens();
-      this.setState({ tokens: allTokensResp });
+      this.setState({ tokens: allTokensResp, spinning: false });
     } catch (err) {
       Modal.error({
         title: 'Error',
@@ -94,15 +97,17 @@ export default class ListToken extends Component {
   };
 
   render() {
-    const { tokens } = this.state;
+    const { tokens, spinning } = this.state;
     return (
-      <ul className="token-list">
-        {tokens && tokens.length > 0 ? (
-          tokens.map((token) => this.renderToken(token))
-        ) : (
-          <p>No products found</p>
-        )}
-      </ul>
+      <Spin spinning={spinning}>
+        <ul className="token-list">
+          {tokens && tokens.length > 0 ? (
+            tokens.map((token) => this.renderToken(token))
+          ) : (
+            <p>No products found</p>
+          )}
+        </ul>
+      </Spin>
     );
   }
 }
