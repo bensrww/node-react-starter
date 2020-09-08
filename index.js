@@ -8,7 +8,7 @@ const app = express();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URI || `mongodb://localhost:27017/tokensDB`,
+  'mongodb+srv://admin-ben:Pass1234@cluster0-cjwhd.mongodb.net/tokensDB',
 );
 
 app.use(bodyParser.json());
