@@ -1,9 +1,11 @@
 .token-list {
   display: block;
+  list-style-type: none;
 }
 
 .token-list-li {
   margin: 3px;
+  padding: 10px 0px;
 }
 
 .token-list-li:nth-child(even) {
