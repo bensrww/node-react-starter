@@ -3,12 +3,16 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 require('./models/Product');
+require('dotenv').config();
 
 const app = express();
 
 mongoose.Promise = global.Promise;
+
+const remoteDbUrl = 'mongodb+srv://admin-ben:Pass1234@cluster0-cjwhd.mongodb.net/tokensDB';
+
 mongoose.connect(
-  'mongodb+srv://admin-ben:Pass1234@cluster0-cjwhd.mongodb.net/tokensDB',
+  process.env.MONGODB_URI || remoteDbUrl,
 );
 
 app.use(bodyParser.json());
