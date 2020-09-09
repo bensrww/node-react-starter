@@ -37,10 +37,8 @@ class App extends React.Component {
   };
 
   handleTabChange = (activeKey) => {
-    if (activeKey === 'listOfTokens')
-      this.setState((prevState) => ({
-        dummyListTokenProp: !prevState.dummyListTokenProp,
-      }));
+    if (activeKey === 'listOfTokens' && this.refs.listTokenPage)
+      this.refs.listTokenPage.refreshTokens();
   };
 
   render() {
@@ -54,7 +52,7 @@ class App extends React.Component {
                 <GetToken />
               </TabPane>
               <TabPane tab="List of Tokens" key="listOfTokens">
-                <ListToken dummyProp={dummyListTokenProp} />
+                <ListToken dummyProp={dummyListTokenProp} ref="listTokenPage" />
               </TabPane>
               <TabPane tab="Generate Tokens" key="generateTokens">
                 <AddToken insertTokens={this.insertTokens} />

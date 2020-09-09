@@ -16,21 +16,16 @@ export default class ListToken extends Component {
   }
 
   componentDidMount() {
+    this.refreshTokens();
+  }
+
+  refreshTokens = () => {
     this.setState({ spinning: true });
     const resp = getAllTokens();
     resp.then((value) => {
       this.setState({ tokens: value, spinning: false });
     });
-  }
-
-  componentDidUpdate() {
-    const resp = getAllTokens();
-    console.log('listToken resp', resp);
-    resp.then((value) => {
-      if (value.toString() !== this.state.tokens.toString())
-        this.setState({ tokens: value, spinning: false });
-    });
-  }
+  };
 
   updateTokenStatus = async (id, status) => {
     try {
