@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Typography, Tooltip } from 'antd';
+import { Row, Col, Button, Typography, Tooltip, Spin } from 'antd';
 import './GetToken.css';
 import _ from 'lodash';
 import { tokenStatus } from '../../constants';
@@ -19,10 +19,12 @@ class GetToken extends React.Component {
         value: null,
         timeStamp: null,
       },
+      spinning: false,
     };
   }
 
   getReadyToken = async () => {
+    this.setState({ spinning: true });
     const resp = await getReadyToken();
     console.log('getReadyToken resp', resp);
     if (resp && resp.currentToken) {
@@ -35,12 +37,21 @@ class GetToken extends React.Component {
         },
       });
     }
+    this.setState({ spinning: false });
   };
 
-  updateAndGetNewToken = () => {
+  updateAndGetNewToken = async () => {
+    this.setState({ spinning: true });
     const { _id } = this.state.token;
-    updateToken(_id, tokenStatus.INVALID);
-    this.getReadyToken();
+    await updateToken(_id, tokenStatus.INVALID);
+    await this.getReadyToken();
+    this.setState({ spinning: false });
+  };
+
+  updateTokenStatus = async (id, status) => {
+    this.setState({ spinning: true });
+    await updateToken(id, status);
+    this.setState({ spinning: false });
   };
 
   ResponseButtons = () => {
@@ -52,7 +63,7 @@ class GetToken extends React.Component {
             <Button
               type="primary"
               className="token-button button-confirm"
-              onClick={() => updateToken(_id, tokenStatus.USED)}
+              onClick={() => this.updateTokenStatus(_id, tokenStatus.USED)}
             >
               <span className="token-button-text">This token works!</span>
             </Button>
@@ -85,10 +96,10 @@ class GetToken extends React.Component {
   );
 
   render() {
-    const { token } = this.state;
+    const { token, spinning } = this.state;
     const { _id, value, timeStamp } = token;
     return (
-      <div>
+      <Spin spinning={spinning}>
         <Row>
           <Col className="get-token-text" span={24}>
             {!_.isEmpty(value) ? <Text copyable>{value}</Text> : 'No tokens'}
@@ -106,7 +117,7 @@ class GetToken extends React.Component {
             <this.InitialGetButton />
           )}
         </Row>
-      </div>
+      </Spin>
     );
   }
 }
