@@ -89,6 +89,7 @@ class GetToken extends React.Component {
         type="primary"
         className="token-button"
         onClick={this.getReadyToken}
+        style={{ height: '80px' }}
       >
         Get Token
       </Button>
