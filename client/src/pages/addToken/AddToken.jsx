@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Form, Modal, Spin } from 'antd';
+import { Button, Input, Form, Modal, Spin, Row, Col } from 'antd';
 import tokenService from '../../services/tokenService';
 
 export class AddToken extends Component {
@@ -41,10 +41,18 @@ export class AddToken extends Component {
           <Form.Item>
             {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
           </Form.Item>
-          <Button onClick={this.handleInsertToken}>Insert Tokens</Button>
-          <Button type="danger" onClick={this.deleteAllTokens}>
-            Delete All Tokens
-          </Button>
+          <Row gutter={[0, 24]}>
+            <Col>
+              <Button type="primary" onClick={this.handleInsertToken}>
+                Insert Tokens
+              </Button>
+            </Col>
+            <Col>
+              <Button type="danger" onClick={this.deleteAllTokens}>
+                Delete All Tokens
+              </Button>
+            </Col>
+          </Row>
         </Spin>
       </Form>
     );
