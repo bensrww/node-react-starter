@@ -50,9 +50,9 @@ class App extends React.Component {
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
             <Tabs defaultActiveKey="getTokens" onChange={this.handleTabChange}>
-              {/* <TabPane tab="Get Tokens" key="getTokens">
+              <TabPane tab="Get Tokens" key="getTokens">
                 <GetToken />
-              </TabPane> */}
+              </TabPane>
               <TabPane tab="List of Tokens" key="listOfTokens">
                 <ListToken dummyProp={dummyListTokenProp} />
               </TabPane>

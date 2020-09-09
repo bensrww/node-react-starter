@@ -39,7 +39,7 @@ class GetToken extends React.Component {
   updateAndGetNewToken = () => {
     const { _id } = this.state.token;
     updateToken(_id, tokenStatus.INVALID);
-    getReadyToken();
+    this.getReadyToken();
   };
 
   ResponseButtons = () => {
