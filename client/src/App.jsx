@@ -25,10 +25,6 @@ const { TabPane } = Tabs;
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      dummyListTokenProp: true, // force to call componentDidMount in ListTokens
-    };
   }
 
   insertTokens = async () => {
@@ -42,7 +38,6 @@ class App extends React.Component {
   };
 
   render() {
-    const { dummyListTokenProp } = this.state;
     return (
       <Layout className="top-layer">
         <Content className="body-layer" style={{ padding: '0 50px' }}>
@@ -52,7 +47,7 @@ class App extends React.Component {
                 <GetToken />
               </TabPane>
               <TabPane tab="List of Tokens" key="listOfTokens">
-                <ListToken dummyProp={dummyListTokenProp} ref="listTokenPage" />
+                <ListToken ref="listTokenPage" />
               </TabPane>
               <TabPane tab="Generate Tokens" key="generateTokens">
                 <AddToken insertTokens={this.insertTokens} />
