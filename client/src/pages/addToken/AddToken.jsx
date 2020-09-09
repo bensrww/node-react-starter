@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Input, Form, Modal, Spin, Row, Col } from 'antd';
+import { Button, Input, Form, Modal, Spin, Row, Col, Typography } from 'antd';
 import tokenService from '../../services/tokenService';
+import './AddToken.css';
+
+const { Text } = Typography;
 
 export class AddToken extends Component {
   constructor(props) {
@@ -38,6 +41,10 @@ export class AddToken extends Component {
     return (
       <Form>
         <Spin spinning={spinning}>
+          <Text strong className="top-note">
+            To insert multiple tokens, separate them by a line-break char (e.g
+            pressing "enter")
+          </Text>
           <Form.Item>
             {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
           </Form.Item>
