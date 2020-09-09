@@ -20,6 +20,9 @@
 
 .token-button {
   min-width: 200px;
+  white-space: normal;
+  height: auto;
+  display: inline-block;
 }
 
 .token-list {
@@ -62,5 +65,11 @@
 @media only screen and (max-width: 672px) {
   .get-token-text {
     font-size: 30px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .token-button {
+    min-width: 10px;
   }
 }

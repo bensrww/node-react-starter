@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
+import './GetToken.css';
 import _ from 'lodash';
 import { tokenStatus } from '../../constants';
 import { updateToken, getReadyToken } from '../../utils/helpers';
@@ -53,7 +54,7 @@ class GetToken extends React.Component {
               className="token-button button-confirm"
               onClick={() => updateToken(_id, tokenStatus.USED)}
             >
-              This token works!
+              <span className="token-button-text">This token works!</span>
             </Button>
           </Tooltip>
         </Col>
@@ -62,7 +63,9 @@ class GetToken extends React.Component {
             onClick={() => this.updateAndGetNewToken()}
             className="token-button button-error"
           >
-            This token doesn't work...
+            <span className="token-button-text">
+              This token doesn't work, click to get a new one!
+            </span>
           </Button>
         </Col>
       </>
