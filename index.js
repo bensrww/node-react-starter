@@ -9,11 +9,10 @@ const app = express();
 
 mongoose.Promise = global.Promise;
 
-const remoteDbUrl = 'mongodb+srv://admin-ben:Pass1234@cluster0-cjwhd.mongodb.net/tokensDB';
+const remoteDbUrl =
+  'mongodb+srv://admin-ben:Pass1234@cluster0-cjwhd.mongodb.net/tokensDB_T2';
 
-mongoose.connect(
-  process.env.MONGODB_URI || remoteDbUrl,
-);
+mongoose.connect(process.env.MONGODB_URI || remoteDbUrl);
 
 app.use(bodyParser.json());
 
