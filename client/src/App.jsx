@@ -8,6 +8,7 @@ import {
   Icon,
   Row,
   Col,
+  Radio,
 } from 'antd';
 import React from 'react';
 import { GetToken, AddToken, ListToken } from './pages';
@@ -25,6 +26,10 @@ const { TabPane } = Tabs;
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      team: null,
+    };
   }
 
   insertTokens = async () => {
@@ -37,9 +42,17 @@ class App extends React.Component {
       this.refs.listTokenPage.refreshTokens();
   };
 
+  handleTeamChange = (e) => {
+    this.setState({ team: e.target.value });
+  };
+
   render() {
     return (
       <Layout className="top-layer">
+        <Radio.Group onChange={this.handleTeamChange} defaultValue={2}>
+          <Radio.Button value={2}>T2</Radio.Button>
+          <Radio.Button value={3}>T3</Radio.Button>
+        </Radio.Group>
         <Content className="body-layer" style={{ padding: '0 50px' }}>
           <div className="site-layout-content">
             <Tabs defaultActiveKey="getTokens" onChange={this.handleTabChange}>
