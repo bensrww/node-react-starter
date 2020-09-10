@@ -9,7 +9,7 @@ export default {
   },
 
   getOneReadyToken: () => {
-    const res = axios.get(`/api/randomToken`);
+    const res = axios.get(`/api/getOneToken`);
     return res;
   },
 

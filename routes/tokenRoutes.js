@@ -18,15 +18,14 @@ module.exports = (app) => {
     return res.status(200).send(tokens);
   });
 
-  app.get('/api/randomToken', async (req, res) => {
+  app.get('/api/getOneToken', async (req, res) => {
     const allReadyTokens = await Token.find({ status: READY });
-    const randomToken =
-      allReadyTokens[Math.floor(Math.random() * allReadyTokens.length)];
-    if (randomToken) {
-      randomToken.status = PENDING;
-      await randomToken.save();
-      console.log('sent token', randomToken);
-      return res.status(200).send(randomToken);
+    const earliestToken = allReadyTokens[0];
+    if (earliestToken) {
+      earliestToken.status = PENDING;
+      await earliestToken.save();
+      console.log('sent token', earliestToken);
+      return res.status(200).send(earliestToken);
     }
     return res.status(500).send({
       errorMsg:
