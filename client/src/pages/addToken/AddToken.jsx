@@ -52,8 +52,9 @@ export class AddToken extends Component {
     return (
       <Row gutter={[16, 32]}>
         {splitText.map((val) => {
+          const isValueError = !(val.length === 6 && /^\d+$/.test(val)); // latter one checks if string only contains numbers
           const textClassName = `token-text ${
-            val.length !== 6 ? 'token-text-err' : ''
+            isValueError ? 'token-text-err' : ''
           }`;
           return (
             <Col className="token-col" {...colSpan}>
