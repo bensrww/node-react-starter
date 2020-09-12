@@ -46,13 +46,15 @@ export class AddToken extends Component {
     const colSpan = {
       xs: 8,
       md: 4,
-      xl: 1,
+      xl: 2,
     };
     return (
-      <Row>
+      <Row gutter={[16, 32]}>
         {splitText.map((val) => (
-          <Col {...colSpan}>
-            <Text>{val}</Text>
+          <Col className="token-col" {...colSpan}>
+            <Text className="token-text" strong>
+              {val}
+            </Text>
           </Col>
         ))}
       </Row>
