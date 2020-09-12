@@ -11,14 +11,13 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path="/t2">
+        <Route exact path="/t2">
           <App teamNumber={TEAM_2} />
         </Route>
-        <Route path="/t3">
+        <Route exact path="/t3">
           <App teamNumber={TEAM_3} />
         </Route>
       </Switch>
-      <App />
     </Router>
   </React.StrictMode>,
   document.getElementById('root'),
