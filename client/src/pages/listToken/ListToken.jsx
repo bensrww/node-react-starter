@@ -56,7 +56,7 @@ export default class ListToken extends Component {
               className={`${className} list-copy-icon`}
               copyable={isTokenReady ? false : { text: token.value }}
             >
-              <Text className="token-text" mark>
+              <Text className="list-token-text" mark>
                 {token.value}
               </Text>{' '}
               <div className="token-extra-info">

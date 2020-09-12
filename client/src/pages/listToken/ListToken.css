@@ -13,8 +13,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-
-  .token-text {
+  .list-token-text {
     font-size: 40px;
   }
 
