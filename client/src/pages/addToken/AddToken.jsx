@@ -43,7 +43,20 @@ export class AddToken extends Component {
     const fieldVal = getFieldValue('tokenValue');
     if (!fieldVal) return <Text>Input tokens, then press Insert Tokens</Text>;
     const splitText = fieldVal.match(/.{1,6}/g);
-    return splitText.map((val) => <Text>{val}</Text>);
+    const colSpan = {
+      xs: 8,
+      md: 4,
+      xl: 1,
+    };
+    return (
+      <Row>
+        {splitText.map((val) => (
+          <Col {...colSpan}>
+            <Text>{val}</Text>
+          </Col>
+        ))}
+      </Row>
+    );
   };
 
   render() {
