@@ -14,12 +14,15 @@ const Token = mongoose.model('tokens');
 
 module.exports = (app) => {
   app.get('/api/token', async (req, res) => {
-    const tokens = await Token.find();
+    const tokens = await Token.find({ teamNumber: req.query.teamNumber });
     return res.status(200).send(tokens);
   });
 
   app.get('/api/getOneToken', async (req, res) => {
-    const allReadyTokens = await Token.find({ status: READY });
+    const allReadyTokens = await Token.find({
+      status: READY,
+      teamNumber: req.query.teamNumber,
+    });
     const earliestToken = allReadyTokens[0];
     if (earliestToken) {
       earliestToken.status = PENDING;
@@ -36,9 +39,10 @@ module.exports = (app) => {
   app.post('/api/updateTokenStatus', async (req, res) => {
     console.log('updateToken req body', req.body);
     if (req.body && req.body.id) {
-      const { id, status } = req.body;
-      let token = await Token.findByIdAndUpdate(id, {
+      const { id, status, teamNumber } = req.body;
+      await Token.findByIdAndUpdate(id, {
         status,
+        teamNumber,
       });
       return res.status(200).send();
     }
@@ -52,6 +56,7 @@ module.exports = (app) => {
         value: tokenValue,
         status: READY,
         timeStamp: moment().format('DD/MM/YYYY hh:mm'),
+        teamNumber: req.body.teamNumber,
       };
       return Token.create(obj);
     });
@@ -85,7 +90,7 @@ module.exports = (app) => {
   });
 
   app.delete(`/api/deleteAllTokens`, async (req, res) => {
-    const token = await Token.deleteMany();
+    const token = await Token.deleteMany({ teamNumber: req.query.teamNumber });
 
     return res.status(202).send({
       error: false,
