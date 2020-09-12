@@ -36,6 +36,16 @@ export class AddToken extends Component {
     });
   };
 
+  renderNumbers = () => {
+    const {
+      form: { getFieldValue },
+    } = this.props;
+    const fieldVal = getFieldValue('tokenValue');
+    if (!fieldVal) return <Text>Input tokens, then press Insert Tokens</Text>;
+    const splitText = fieldVal.match(/.{1,6}/g);
+    return splitText.map((val) => <Text>{val}</Text>);
+  };
+
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
@@ -47,6 +57,7 @@ export class AddToken extends Component {
             To insert multiple tokens, separate them by a line-break char (e.g
             pressing "enter")
           </Text>
+          <span>{this.renderNumbers()}</span>
           <Form.Item>
             {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
           </Form.Item>
