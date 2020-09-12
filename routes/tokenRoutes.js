@@ -50,7 +50,7 @@ module.exports = (app) => {
 
   app.post(`/api/token`, async (req, res) => {
     console.log('post body', req.body);
-    const tokens = req.body.tokenValues.split('\n');
+    const tokens = req.body.tokenValues.match(/.{1,6}/g);
     const promises = tokens.map((tokenValue) => {
       const obj = {
         value: tokenValue,

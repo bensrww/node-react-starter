@@ -19,13 +19,18 @@ export class AddToken extends Component {
     this.setState({
       spinning: true,
     });
-    const { form } = this.props;
-    const { getFieldValue } = form;
-    const { teamNumber } = this.context;
-    console.log('form', form);
-    await tokenService.insertTokens(getFieldValue('tokenValue'), teamNumber);
-    this.setState({
-      spinning: false,
+    const {
+      form: { validateFields },
+    } = this.props;
+
+    validateFields(['tokenValue'], async (err, values) => {
+      if (!err) {
+        const { teamNumber } = this.context;
+        await tokenService.insertTokens(values.tokenValue, teamNumber);
+      }
+      this.setState({
+        spinning: false,
+      });
     });
   };
 
@@ -71,7 +76,7 @@ export class AddToken extends Component {
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form>
         <Spin spinning={spinning}>
@@ -81,7 +86,20 @@ export class AddToken extends Component {
           </Text>
           <span>{this.renderNumbers()}</span>
           <Form.Item>
-            {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
+            {getFieldDecorator('tokenValue', {
+              rules: [
+                { required: true, message: 'Please input passcode!' },
+                {
+                  validator: (rule, value, callback) => {
+                    const tokenValue = getFieldValue('tokenValue');
+                    const hasError = !/^\d+$/.test(tokenValue);
+                    if (hasError)
+                      callback('Passcode contains non-numerical value(s)');
+                    callback();
+                  },
+                },
+              ],
+            })(<Input.TextArea rows={8} />)}
           </Form.Item>
           <Row gutter={[0, 24]}>
             <Col>
