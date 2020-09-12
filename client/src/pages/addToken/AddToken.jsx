@@ -35,7 +35,7 @@ export class AddToken extends Component {
   };
 
   render() {
-    const { insertTokens, form } = this.props;
+    const { form } = this.props;
     const { spinning } = this.state;
     const { getFieldDecorator } = form;
     return (

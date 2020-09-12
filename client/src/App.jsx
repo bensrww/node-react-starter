@@ -29,11 +29,6 @@ class App extends React.Component {
     super(props);
   }
 
-  insertTokens = async () => {
-    const randomNum = Math.floor(Math.random() * 899999 + 100000).toString(10);
-    await tokenService.insertTokens(randomNum);
-  };
-
   handleTabChange = (activeKey) => {
     if (activeKey === 'listOfTokens' && this.refs.listTokenPage)
       this.refs.listTokenPage.refreshTokens();
@@ -56,7 +51,7 @@ class App extends React.Component {
                   <ListToken ref="listTokenPage" />
                 </TabPane>
                 <TabPane tab="Generate Tokens" key="generateTokens">
-                  <AddToken insertTokens={this.insertTokens} />
+                  <AddToken />
                 </TabPane>
               </Tabs>
             </div>
