@@ -22,17 +22,18 @@ export default class ListToken extends Component {
 
   refreshTokens = () => {
     this.setState({ spinning: true });
-    const resp = getAllTokens();
+    const resp = getAllTokens(this.context.teamNumber);
     resp.then((value) => {
       this.setState({ tokens: value, spinning: false });
     });
   };
 
   updateTokenStatus = async (id, status) => {
+    const { teamNumber } = this.context;
     try {
       this.setState({ spinning: true });
-      const updateResp = await updateToken(id, status);
-      const allTokensResp = await getAllTokens();
+      const updateResp = await updateToken(id, status, teamNumber);
+      const allTokensResp = await getAllTokens(teamNumber);
       this.setState({ tokens: allTokensResp, spinning: false });
     } catch (err) {
       Modal.error({

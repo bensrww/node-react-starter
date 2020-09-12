@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Form, Modal, Spin, Row, Col, Typography } from 'antd';
 import tokenService from '../../services/tokenService';
 import './AddToken.css';
+import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
@@ -20,8 +21,9 @@ export class AddToken extends Component {
     });
     const { form } = this.props;
     const { getFieldValue } = form;
+    const { teamNumber } = this.context;
     console.log('form', form);
-    await tokenService.insertTokens(getFieldValue('tokenValue'));
+    await tokenService.insertTokens(getFieldValue('tokenValue'), teamNumber);
     this.setState({
       spinning: false,
     });
@@ -30,7 +32,7 @@ export class AddToken extends Component {
   deleteAllTokens = () => {
     Modal.warning({
       title: 'Are you sure?',
-      onOk: tokenService.deleteAllTokens,
+      onOk: () => tokenService.deleteAllTokens(this.context.teamNumber),
     });
   };
 
@@ -67,3 +69,5 @@ export class AddToken extends Component {
 }
 
 export default Form.create()(AddToken);
+
+AddToken.contextType = TeamNumberContext;

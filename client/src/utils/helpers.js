@@ -9,38 +9,31 @@ export function getSafe(fn, defaultVal) {
   }
 }
 
-export const updateToken = async (id, status) => {
-  const res = await tokenService.updateTokenStatus(id, status);
-  console.log('update token', id, status, res);
+export const updateToken = async (id, status, teamNum) => {
+  const res = await tokenService.updateTokenStatus(id, status, teamNum);
 };
 
-export const getAllTokens = async () => {
-  let res = await tokenService.getTokens();
-  console.log('getAllTokens', res);
+export const getAllTokens = async (teamNum) => {
+  let res = await tokenService.getTokens(teamNum);
   return res;
 };
 
-export const getReadyToken = async () => {
-  const displayErrModal = (msg) => {
-    Modal.error({
-      title: 'Error',
-      content: msg,
-    });
-  };
+export const getReadyToken = async (teamNum) => {
   try {
-    const res = await tokenService.getOneReadyToken();
+    const res = await tokenService.getOneReadyToken(teamNum);
     console.log('Get ready token ok', res);
     if (getSafe(() => res.data.value, null)) {
       return { currentToken: res.data };
     }
   } catch (err) {
-    console.log('getReadyToken err', err);
-    displayErrModal(err.response.data.errorMsg);
+    Modal.error({
+      title: 'Error',
+      content: err.response.data.errorMsg,
+    });
   }
 };
 
-export const clearAllToken = async () => {
-  let res = await tokenService.deleteAllTokens();
-  console.log('deleteAllTokens', res);
+export const clearAllToken = async (teamNum) => {
+  let res = await tokenService.deleteAllTokens(teamNum);
   return res;
 };
