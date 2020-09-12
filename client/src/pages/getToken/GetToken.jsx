@@ -6,6 +6,8 @@ import _ from 'lodash';
 import { tokenStatus } from '../../constants';
 import { updateToken, getReadyToken } from '../../utils/helpers';
 import renderEmpty from 'antd/lib/config-provider/renderEmpty';
+import { TeamNumberContext } from '../../TeamNumberContext';
+import { TEAM_NUMBER } from '../../constants';
 
 const { Text } = Typography;
 
@@ -20,6 +22,7 @@ class GetToken extends React.Component {
         timeStamp: null,
       },
       spinning: false,
+      visible: true,
     };
   }
 
@@ -98,6 +101,7 @@ class GetToken extends React.Component {
 
   render() {
     const { token, spinning } = this.state;
+    const { teamNumber } = this.context;
     const { _id, value, timeStamp } = token;
     return (
       <Spin spinning={spinning}>
@@ -124,6 +128,9 @@ class GetToken extends React.Component {
 }
 
 export default GetToken;
+
+GetToken.contextType = TeamNumberContext;
+
 GetToken.propTypes = {
   token: PropTypes.string,
   getToken: PropTypes.func,
