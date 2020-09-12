@@ -3,6 +3,7 @@ import { Row, Col, Typography, Button, Modal, Spin } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
 import { updateToken, getAllTokens } from '../../utils/helpers';
+import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text, Paragraph } = Typography;
 
@@ -93,6 +94,7 @@ export default class ListToken extends Component {
 
   render() {
     const { tokens, spinning } = this.state;
+    console.log('listTokenContext', this.context);
     return (
       <Spin spinning={spinning}>
         <ul className="token-list">
@@ -106,3 +108,5 @@ export default class ListToken extends Component {
     );
   }
 }
+
+ListToken.contextType = TeamNumberContext;

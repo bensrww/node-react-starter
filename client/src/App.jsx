@@ -17,11 +17,13 @@ import { tokenStatus } from './constants';
 import _ from 'lodash';
 import tokenService from './services/tokenService';
 import { getSafe } from './utils/helpers';
+import { TeamNumberContext } from './TeamNumberContext';
 
 const { READY, USED, INVALID, PENDING } = tokenStatus;
 const { Header, Content, Footer } = Layout;
 const { Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -39,24 +41,31 @@ class App extends React.Component {
 
   render() {
     return (
-      <Layout className="top-layer">
-        <Content className="body-layer" style={{ padding: '0 50px' }}>
-          <div className="site-layout-content">
-            <Tabs defaultActiveKey="getTokens" onChange={this.handleTabChange}>
-              <TabPane tab="Get Tokens" key="getTokens">
-                <GetToken />
-              </TabPane>
-              <TabPane tab="List of Tokens" key="listOfTokens">
-                <ListToken ref="listTokenPage" />
-              </TabPane>
-              <TabPane tab="Generate Tokens" key="generateTokens">
-                <AddToken insertTokens={this.insertTokens} />
-              </TabPane>
-            </Tabs>
-          </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Made by Ben Chong 2020</Footer>
-      </Layout>
+      <TeamNumberContext.Provider value={{ teamNumber: this.props.teamNumber }}>
+        <Layout className="top-layer">
+          <Content className="body-layer" style={{ padding: '0 50px' }}>
+            <div className="site-layout-content">
+              <Tabs
+                defaultActiveKey="getTokens"
+                onChange={this.handleTabChange}
+              >
+                <TabPane tab="Get Tokens" key="getTokens">
+                  <GetToken />
+                </TabPane>
+                <TabPane tab="List of Tokens" key="listOfTokens">
+                  <ListToken ref="listTokenPage" />
+                </TabPane>
+                <TabPane tab="Generate Tokens" key="generateTokens">
+                  <AddToken insertTokens={this.insertTokens} />
+                </TabPane>
+              </Tabs>
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            Made by Ben Chong 2020
+          </Footer>
+        </Layout>
+      </TeamNumberContext.Provider>
     );
   }
 }
