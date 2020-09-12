@@ -69,7 +69,7 @@ class App extends React.Component {
           </Button>
         </Modal>
         <Layout className="top-layer">
-          <Radio.Group onChange={this.handleTeamChange} defaultValue={2}>
+          <Radio.Group onChange={this.handleTeamChange} value={teamNumber}>
             <Radio.Button value={2}>T2</Radio.Button>
             <Radio.Button value={3}>T3</Radio.Button>
           </Radio.Group>
