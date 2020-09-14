@@ -11,7 +11,7 @@ import {
   Radio,
 } from 'antd';
 import React from 'react';
-import { GetToken, AddToken, ListToken } from './pages';
+import { GetToken, AddToken, ListToken, Feedback } from './pages';
 import './App.css';
 import mockTokens from './mockData/tokens';
 import { tokenStatus, TEAM_NUMBER } from './constants';
@@ -80,6 +80,9 @@ class App extends React.Component {
                 </TabPane>
                 <TabPane tab="List of Tokens" key="listOfTokens">
                   <ListToken ref="listTokenPage" />
+                </TabPane>
+                <TabPane tab="Feedback/ Forum" key="feedback">
+                  <Feedback />
                 </TabPane>
               </Tabs>
             </div>
