@@ -13,6 +13,11 @@ export default {
     return res;
   },
 
+  getNumberOfTokensService: (teamNumber) => {
+    const res = axios.get(`/api/getNumberOfTokens?teamNumber=${teamNumber}`);
+    return res;
+  },
+
   updateTokenStatus: (id, status, teamNumber) => {
     const res = axios.post(`/api/updateTokenStatus`, {
       id,

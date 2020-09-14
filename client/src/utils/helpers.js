@@ -33,6 +33,18 @@ export const getReadyToken = async (teamNumber) => {
   }
 };
 
+export const getNumberOfTokens = async (teamNumber) => {
+  try {
+    const res = await tokenService.getNumberOfTokensService(teamNumber);
+    return res.data;
+  } catch (err) {
+    Modal.error({
+      title: 'Error',
+      content: err.response.data.errorMsg,
+    });
+  }
+};
+
 export const clearAllToken = async (teamNumber) => {
   let res = await tokenService.deleteAllTokens(teamNumber);
   return res;

@@ -4,7 +4,11 @@ import { Row, Col, Button, Typography, Tooltip, Spin } from 'antd';
 import './GetToken.css';
 import _ from 'lodash';
 import { tokenStatus } from '../../constants';
-import { updateToken, getReadyToken } from '../../utils/helpers';
+import {
+  updateToken,
+  getReadyToken,
+  getNumberOfTokens,
+} from '../../utils/helpers';
 import renderEmpty from 'antd/lib/config-provider/renderEmpty';
 import { TeamNumberContext } from '../../TeamNumberContext';
 
@@ -21,7 +25,15 @@ class GetToken extends React.Component {
         timeStamp: null,
       },
       spinning: false,
+      numberOfTokensRemaining: 0,
     };
+  }
+
+  componentDidMount() {
+    const resp = getNumberOfTokens(this.context.teamNumber);
+    resp.then((val) => {
+      this.setState({ numberOfTokensRemaining: val.numberOfTokens });
+    });
   }
 
   getReadyToken = async () => {
@@ -98,10 +110,11 @@ class GetToken extends React.Component {
   );
 
   render() {
-    const { token, spinning } = this.state;
+    const { token, spinning, numberOfTokensRemaining } = this.state;
     const { _id, value, timeStamp } = token;
     return (
       <Spin spinning={spinning}>
+        <Text className="num-remain-tokens">{`Number of remaining tokens: ${numberOfTokensRemaining}`}</Text>
         <Row>
           <Col className="get-token-text" span={24}>
             {!_.isEmpty(value) ? <Text copyable>{value}</Text> : 'No tokens'}

@@ -36,6 +36,17 @@ module.exports = (app) => {
     });
   });
 
+  app.get('/api/getNumberOfTokens', async (req, res) => {
+    const allReadyTokens = await Token.find({
+      status: READY,
+      teamNumber: req.query.teamNumber,
+    });
+
+    const numberOfTokens = allReadyTokens.length;
+    console.log('numberOfTokens', numberOfTokens);
+    return res.status(200).send({ numberOfTokens });
+  });
+
   app.post('/api/updateTokenStatus', async (req, res) => {
     console.log('updateToken req body', req.body);
     if (req.body && req.body.id) {
