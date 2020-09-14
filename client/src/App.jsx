@@ -37,6 +37,8 @@ class App extends React.Component {
   handleTabChange = (activeKey) => {
     if (activeKey === 'listOfTokens' && this.refs.listTokenPage)
       this.refs.listTokenPage.refreshTokens();
+    else if (activeKey === 'getTokens' && this.refs.getTokenPage)
+      this.refs.getTokenPage.refreshNumberOfTokens();
   };
 
   handleTeamChange = (e) => {
@@ -55,7 +57,7 @@ class App extends React.Component {
                 tabPosition="top"
               >
                 <TabPane tab="Get Tokens" key="getTokens">
-                  <GetToken />
+                  <GetToken ref="getTokenPage" />
                 </TabPane>
                 <TabPane tab="List of Tokens" key="listOfTokens">
                   <ListToken ref="listTokenPage" />
