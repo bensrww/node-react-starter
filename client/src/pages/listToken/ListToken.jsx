@@ -64,7 +64,7 @@ export default class ListToken extends Component {
                 {token.value}
               </Text>{' '}
               <div className="token-extra-info">
-                {token.status} {displayLocalTime(token.timeStamp)}
+                {token.status} {displayLocalTime(token.timeStamp)} HKT
               </div>
             </Paragraph>
           </Col>

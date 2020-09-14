@@ -8,6 +8,7 @@ import {
   updateToken,
   getReadyToken,
   getNumberOfTokens,
+  displayLocalTime,
 } from '../../utils/helpers';
 import renderEmpty from 'antd/lib/config-provider/renderEmpty';
 import { TeamNumberContext } from '../../TeamNumberContext';
@@ -130,7 +131,7 @@ class GetToken extends React.Component {
           {!_.isEmpty(value) ? (
             <>
               <Text type="secondary">
-                This token was generated at {timeStamp}
+                This token was generated at {displayLocalTime(timeStamp)} HKT
               </Text>
               <this.ResponseButtons />
             </>
