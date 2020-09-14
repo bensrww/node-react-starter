@@ -3,23 +3,27 @@ import moment from 'moment';
 import { tokenStatus } from '../constants';
 const { READY } = tokenStatus;
 export default {
-  getTokens: async () => {
-    let res = await axios.get(`/api/token`);
+  getTokens: async (teamNumber) => {
+    let res = await axios.get(`/api/token?teamNumber=${teamNumber}`);
     return res.data || [];
   },
 
-  getOneReadyToken: () => {
-    const res = axios.get(`/api/getOneToken`);
+  getOneReadyToken: (teamNumber) => {
+    const res = axios.get(`/api/getOneToken?teamNumber=${teamNumber}`);
     return res;
   },
 
-  updateTokenStatus: (id, status) => {
-    const res = axios.post(`/api/updateTokenStatus`, { id, status });
+  updateTokenStatus: (id, status, teamNumber) => {
+    const res = axios.post(`/api/updateTokenStatus`, {
+      id,
+      status,
+      teamNumber,
+    });
     return res;
   },
 
-  insertTokens: async (tokenValues) => {
-    const reqBody = { tokenValues };
+  insertTokens: async (tokenValues, teamNumber) => {
+    const reqBody = { tokenValues, teamNumber };
     console.log('reqBody', reqBody);
     let res = await axios.post(`/api/token`, reqBody, {
       headers: {
@@ -29,8 +33,10 @@ export default {
     return res.data || [];
   },
 
-  deleteAllTokens: async () => {
-    const res = await axios.delete(`/api/deleteAllTokens`);
+  deleteAllTokens: async (teamNumber) => {
+    const res = await axios.delete(
+      `/api/deleteAllTokens?teamNumber=${teamNumber}`,
+    );
     return res.data || '';
   },
 };

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { tokenStatus } from '../../constants';
 import { updateToken, getReadyToken } from '../../utils/helpers';
 import renderEmpty from 'antd/lib/config-provider/renderEmpty';
+import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
@@ -25,7 +26,7 @@ class GetToken extends React.Component {
 
   getReadyToken = async () => {
     this.setState({ spinning: true });
-    const resp = await getReadyToken();
+    const resp = await getReadyToken(this.context.teamNumber);
     console.log('getReadyToken resp', resp);
     if (resp && resp.currentToken) {
       const { _id, timeStamp, value } = resp.currentToken;
@@ -43,14 +44,14 @@ class GetToken extends React.Component {
   updateAndGetNewToken = async () => {
     this.setState({ spinning: true });
     const { _id } = this.state.token;
-    await updateToken(_id, tokenStatus.INVALID);
+    await updateToken(_id, tokenStatus.INVALID, this.context.teamNumber);
     await this.getReadyToken();
     this.setState({ spinning: false });
   };
 
   updateTokenStatus = async (id, status) => {
     this.setState({ spinning: true });
-    await updateToken(id, status);
+    await updateToken(id, status, this.context.teamNumber);
     this.setState({ spinning: false });
   };
 
@@ -124,6 +125,9 @@ class GetToken extends React.Component {
 }
 
 export default GetToken;
+
+GetToken.contextType = TeamNumberContext;
+
 GetToken.propTypes = {
   token: PropTypes.string,
   getToken: PropTypes.func,

@@ -3,6 +3,7 @@ import { Row, Col, Typography, Button, Modal, Spin } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
 import { updateToken, getAllTokens } from '../../utils/helpers';
+import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text, Paragraph } = Typography;
 
@@ -21,17 +22,18 @@ export default class ListToken extends Component {
 
   refreshTokens = () => {
     this.setState({ spinning: true });
-    const resp = getAllTokens();
+    const resp = getAllTokens(this.context.teamNumber);
     resp.then((value) => {
       this.setState({ tokens: value, spinning: false });
     });
   };
 
   updateTokenStatus = async (id, status) => {
+    const { teamNumber } = this.context;
     try {
       this.setState({ spinning: true });
-      const updateResp = await updateToken(id, status);
-      const allTokensResp = await getAllTokens();
+      const updateResp = await updateToken(id, status, teamNumber);
+      const allTokensResp = await getAllTokens(teamNumber);
       this.setState({ tokens: allTokensResp, spinning: false });
     } catch (err) {
       Modal.error({
@@ -54,7 +56,7 @@ export default class ListToken extends Component {
               className={`${className} list-copy-icon`}
               copyable={isTokenReady ? false : { text: token.value }}
             >
-              <Text className="token-text" mark>
+              <Text className="list-token-text" mark>
                 {token.value}
               </Text>{' '}
               <div className="token-extra-info">
@@ -93,6 +95,7 @@ export default class ListToken extends Component {
 
   render() {
     const { tokens, spinning } = this.state;
+    console.log('listTokenContext', this.context);
     return (
       <Spin spinning={spinning}>
         <ul className="token-list">
@@ -106,3 +109,5 @@ export default class ListToken extends Component {
     );
   }
 }
+
+ListToken.contextType = TeamNumberContext;

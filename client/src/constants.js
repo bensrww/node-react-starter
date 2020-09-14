@@ -5,3 +5,8 @@ export const tokenStatus = {
   INVALID: 'INVALID',
   PENDING: 'PENDING',
 };
+
+export const TEAM_NUMBER = {
+  TEAM_2: 2,
+  TEAM_3: 3,
+};

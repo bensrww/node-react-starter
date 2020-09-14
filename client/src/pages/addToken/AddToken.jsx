@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Form, Modal, Spin, Row, Col, Typography } from 'antd';
 import tokenService from '../../services/tokenService';
 import './AddToken.css';
+import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
@@ -18,26 +19,64 @@ export class AddToken extends Component {
     this.setState({
       spinning: true,
     });
-    const { form } = this.props;
-    const { getFieldValue } = form;
-    console.log('form', form);
-    await tokenService.insertTokens(getFieldValue('tokenValue'));
-    this.setState({
-      spinning: false,
+    const {
+      form: { validateFields },
+    } = this.props;
+
+    validateFields(['tokenValue'], async (err, values) => {
+      if (!err) {
+        const { teamNumber } = this.context;
+        await tokenService.insertTokens(values.tokenValue, teamNumber);
+      }
+      this.setState({
+        spinning: false,
+      });
     });
   };
 
   deleteAllTokens = () => {
     Modal.warning({
       title: 'Are you sure?',
-      onOk: tokenService.deleteAllTokens,
+      onOk: () => tokenService.deleteAllTokens(this.context.teamNumber),
     });
   };
 
+  renderNumbers = () => {
+    const {
+      form: { getFieldValue },
+    } = this.props;
+    const fieldVal = getFieldValue('tokenValue');
+    if (!fieldVal) return <Text>Input tokens, then press Insert Tokens</Text>;
+    const splitText = fieldVal.match(/.{1,6}/g);
+    const colSpan = {
+      xs: 8,
+      md: 4,
+      xl: 2,
+    };
+
+    return (
+      <Row gutter={[16, 32]}>
+        {splitText.map((val) => {
+          const isValueError = !(val.length === 6 && /^\d+$/.test(val)); // latter one checks if string only contains numbers
+          const textClassName = `token-text ${
+            isValueError ? 'token-text-err' : ''
+          }`;
+          return (
+            <Col className="token-col" {...colSpan}>
+              <Text className={textClassName} strong>
+                {val}
+              </Text>
+            </Col>
+          );
+        })}
+      </Row>
+    );
+  };
+
   render() {
-    const { insertTokens, form } = this.props;
+    const { form } = this.props;
     const { spinning } = this.state;
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form>
         <Spin spinning={spinning}>
@@ -45,8 +84,22 @@ export class AddToken extends Component {
             To insert multiple tokens, separate them by a line-break char (e.g
             pressing "enter")
           </Text>
+          <span>{this.renderNumbers()}</span>
           <Form.Item>
-            {getFieldDecorator('tokenValue')(<Input.TextArea rows={8} />)}
+            {getFieldDecorator('tokenValue', {
+              rules: [
+                { required: true, message: 'Please input passcode!' },
+                {
+                  validator: (rule, value, callback) => {
+                    const tokenValue = getFieldValue('tokenValue');
+                    const hasError = !/^\d+$/.test(tokenValue);
+                    if (hasError)
+                      callback('Passcode contains non-numerical value(s)');
+                    callback();
+                  },
+                },
+              ],
+            })(<Input.TextArea rows={8} />)}
           </Form.Item>
           <Row gutter={[0, 24]}>
             <Col>
@@ -67,3 +120,5 @@ export class AddToken extends Component {
 }
 
 export default Form.create()(AddToken);
+
+AddToken.contextType = TeamNumberContext;
