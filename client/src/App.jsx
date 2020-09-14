@@ -31,14 +31,26 @@ class App extends React.Component {
 
     this.state = {
       team: null,
+      activeTabKey: 'getTokens',
     };
   }
 
   handleTabChange = (activeKey) => {
-    if (activeKey === 'listOfTokens' && this.refs.listTokenPage)
-      this.refs.listTokenPage.refreshTokens();
-    else if (activeKey === 'getTokens' && this.refs.getTokenPage)
+    if (activeKey === 'listOfTokens') {
+      if (this.refs.listTokenPage) this.refs.listTokenPage.refreshTokens();
+      Modal.confirm({
+        title: 'Debug page',
+        content: 'Please go to Get Tokens page to get token',
+        onOk: () => {
+          this.setState({ activeTabKey: 'getTokens' });
+        },
+        onCancel: () => {},
+      });
+    } else if (activeKey === 'getTokens' && this.refs.getTokenPage) {
       this.refs.getTokenPage.refreshNumberOfTokens();
+    }
+
+    this.setState({ activeTabKey: activeKey });
   };
 
   handleTeamChange = (e) => {
@@ -52,18 +64,18 @@ class App extends React.Component {
           <Content className="body-layer" style={{ padding: '0 50px' }}>
             <div className="site-layout-content">
               <Tabs
-                defaultActiveKey="getTokens"
                 onChange={this.handleTabChange}
                 tabPosition="top"
+                activeKey={this.state.activeTabKey}
               >
                 <TabPane tab="Get Tokens" key="getTokens">
                   <GetToken ref="getTokenPage" />
                 </TabPane>
-                <TabPane tab="List of Tokens" key="listOfTokens">
-                  <ListToken ref="listTokenPage" />
-                </TabPane>
                 <TabPane tab="Generate Tokens" key="generateTokens">
                   <AddToken />
+                </TabPane>
+                <TabPane tab="List of Tokens" key="listOfTokens">
+                  <ListToken ref="listTokenPage" />
                 </TabPane>
               </Tabs>
             </div>
