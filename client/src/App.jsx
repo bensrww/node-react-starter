@@ -52,6 +52,7 @@ class App extends React.Component {
               <Tabs
                 defaultActiveKey="getTokens"
                 onChange={this.handleTabChange}
+                tabPosition="top"
               >
                 <TabPane tab="Get Tokens" key="getTokens">
                   <GetToken />
