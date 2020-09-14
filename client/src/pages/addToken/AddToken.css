@@ -26,4 +26,8 @@
     padding: 0 10px;
     background-color: lightskyblue;
   }
+
+  .token-text-err {
+    background-color: white;
+  }
 }
