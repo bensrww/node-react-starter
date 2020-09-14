@@ -31,11 +31,19 @@ class GetToken extends React.Component {
   }
 
   componentDidMount() {
+    this.refreshNumberOfTokens();
+  }
+
+  refreshNumberOfTokens = () => {
+    this.setState({ spinning: true });
     const resp = getNumberOfTokens(this.context.teamNumber);
     resp.then((val) => {
-      this.setState({ numberOfTokensRemaining: val.numberOfTokens });
+      this.setState({
+        numberOfTokensRemaining: val.numberOfTokens,
+        spinning: false,
+      });
     });
-  }
+  };
 
   getReadyToken = async () => {
     this.setState({ spinning: true });
@@ -51,6 +59,7 @@ class GetToken extends React.Component {
         },
       });
     }
+    this.refreshNumberOfTokens();
     this.setState({ spinning: false });
   };
 
@@ -59,12 +68,14 @@ class GetToken extends React.Component {
     const { _id } = this.state.token;
     await updateToken(_id, tokenStatus.INVALID, this.context.teamNumber);
     await this.getReadyToken();
+    this.refreshNumberOfTokens();
     this.setState({ spinning: false });
   };
 
   updateTokenStatus = async (id, status) => {
     this.setState({ spinning: true });
     await updateToken(id, status, this.context.teamNumber);
+    this.refreshNumberOfTokens();
     this.setState({ spinning: false });
   };
 
