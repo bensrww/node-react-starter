@@ -14,7 +14,9 @@ const Token = mongoose.model('tokens');
 
 module.exports = (app) => {
   app.get('/api/token', async (req, res) => {
-    const tokens = await Token.find({ teamNumber: req.query.teamNumber });
+    const tokens = await Token.find({ teamNumber: req.query.teamNumber }).sort(
+      'sequence',
+    );
     return res.status(200).send(tokens);
   });
 
