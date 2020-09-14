@@ -68,7 +68,7 @@ export default class ListToken extends Component {
               className={`${className} list-copy-icon`}
             >
               <Text className="list-token-text" mark>
-                {this.maskValue(token.value)}
+                {this.maskValue(token.value)} Sequence: {token.sequence}
               </Text>{' '}
               <div className="token-extra-info">
                 {token.status} {displayLocalTime(token.timeStamp)} HKT

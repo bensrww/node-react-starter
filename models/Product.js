@@ -7,6 +7,7 @@ const tokenSchema = new Schema({
   status: String,
   timeStamp: String,
   teamNumber: Number,
+  sequence: Number,
 });
 
 mongoose.model('tokens', tokenSchema);

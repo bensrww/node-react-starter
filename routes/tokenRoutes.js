@@ -43,7 +43,6 @@ module.exports = (app) => {
     });
 
     const numberOfTokens = allReadyTokens.length;
-    console.log('numberOfTokens', numberOfTokens);
     return res.status(200).send({ numberOfTokens });
   });
 
@@ -60,14 +59,21 @@ module.exports = (app) => {
   });
 
   app.post(`/api/token`, async (req, res) => {
-    console.log('post body', req.body);
     const tokens = req.body.tokenValues.match(/.{1,6}/g);
-    const promises = tokens.map((tokenValue) => {
+    const allReadyTokens = await Token.find({
+      teamNumber: req.body.teamNumber,
+    });
+
+    const numberOfTokens = allReadyTokens.length;
+    console.log('numberOfTokens', numberOfTokens);
+
+    const promises = tokens.map((tokenValue, index) => {
       const obj = {
         value: tokenValue,
         status: READY,
         timeStamp: moment(),
         teamNumber: req.body.teamNumber,
+        sequence: numberOfTokens + index,
       };
       return Token.create(obj);
     });
