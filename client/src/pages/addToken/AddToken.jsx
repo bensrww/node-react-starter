@@ -81,8 +81,8 @@ export class AddToken extends Component {
       <Form>
         <Spin spinning={spinning}>
           <Text strong className="top-note">
-            To insert multiple tokens, separate them by a line-break char (e.g
-            pressing "enter")
+            To insert multiple tokens, please <Text type="danger">don't</Text>{' '}
+            type enter, just type 123456654321 to insert 2 tokens, for example
           </Text>
           <span>{this.renderNumbers()}</span>
           <Form.Item>
