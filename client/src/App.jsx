@@ -14,7 +14,7 @@ import React from 'react';
 import { GetToken, AddToken, ListToken } from './pages';
 import './App.css';
 import mockTokens from './mockData/tokens';
-import { tokenStatus } from './constants';
+import { tokenStatus, TEAM_NUMBER } from './constants';
 import _ from 'lodash';
 import tokenService from './services/tokenService';
 import { getSafe } from './utils/helpers';
@@ -58,9 +58,13 @@ class App extends React.Component {
   };
 
   render() {
+    const backgroundClassName =
+      this.props.teamNumber === TEAM_NUMBER.TEAM_2
+        ? 't2-background'
+        : 't3-background';
     return (
       <TeamNumberContext.Provider value={{ teamNumber: this.props.teamNumber }}>
-        <Layout className="top-layer">
+        <Layout className={`top-layer ${backgroundClassName}`}>
           <Content className="body-layer" style={{ padding: '0 50px' }}>
             <div className="site-layout-content">
               <Tabs
