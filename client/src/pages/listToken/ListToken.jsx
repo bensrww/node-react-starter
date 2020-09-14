@@ -47,6 +47,14 @@ export default class ListToken extends Component {
     }
   };
 
+  replaceAt = (string, index, replace) => {
+    return string.substring(0, index) + replace + string.substring(index + 1);
+  };
+
+  maskValue = (value) => {
+    return this.replaceAt(value, 2, '*');
+  };
+
   renderToken = (token) => {
     let className = '';
     const isTokenReady = token.status !== tokenStatus.READY;
@@ -58,10 +66,9 @@ export default class ListToken extends Component {
             <Paragraph
               style={{ display: 'inline-block', margin: 0 }}
               className={`${className} list-copy-icon`}
-              copyable={isTokenReady ? false : { text: token.value }}
             >
               <Text className="list-token-text" mark>
-                {token.value}
+                {this.maskValue(token.value)}
               </Text>{' '}
               <div className="token-extra-info">
                 {token.status} {displayLocalTime(token.timeStamp)} HKT
@@ -73,7 +80,7 @@ export default class ListToken extends Component {
               className="list-button first button-confirm"
               size="small"
               icon="check"
-              disabled={isTokenReady}
+              disabled={true}
               onClick={() =>
                 this.updateTokenStatus(token._id, tokenStatus.USED)
               }
@@ -84,7 +91,7 @@ export default class ListToken extends Component {
               className="list-button button-error"
               size="small"
               icon="close"
-              disabled={isTokenReady}
+              disabled={true}
               onClick={() =>
                 this.updateTokenStatus(token._id, tokenStatus.INVALID)
               }
