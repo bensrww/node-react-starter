@@ -115,9 +115,12 @@ class GetToken extends React.Component {
     return (
       <Spin spinning={spinning}>
         <Text className="num-remain-tokens">Number of remaining tokens: </Text>
-        <Text className="num-remain-tokens-digit">
-          {numberOfTokensRemaining}
-        </Text>
+        <div className="num-remain-tokens-frame">
+          <Text className="num-remain-tokens-digit">
+            {numberOfTokensRemaining}
+          </Text>
+        </div>
+
         <Row>
           <Col className="get-token-text" span={24}>
             {!_.isEmpty(value) ? <Text copyable>{value}</Text> : 'No tokens'}

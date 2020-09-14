@@ -6,9 +6,19 @@
   font-size: 15px;
 }
 
-.num-remain-tokens-digit {
-  font-size: 30px;
+.num-remain-tokens-frame {
   display: block;
+  margin-top: 10px;
+}
+
+.num-remain-tokens-digit {
+  display: inline-block;
+  font-size: 30px;
+  padding: 5px 10px;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border: 5px solid rgb(89 89 89);
 }
 
 @media only screen and (max-width: 600px) {
