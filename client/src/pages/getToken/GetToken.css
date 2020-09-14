@@ -6,6 +6,11 @@
   font-size: 15px;
 }
 
+.num-remain-tokens-digit {
+  font-size: 30px;
+  display: block;
+}
+
 @media only screen and (max-width: 600px) {
   .num-remain-tokens {
     font-size: 10px;
