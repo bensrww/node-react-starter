@@ -92,9 +92,14 @@ export class AddToken extends Component {
                 {
                   validator: (rule, value, callback) => {
                     const tokenValue = getFieldValue('tokenValue');
-                    const hasError = !/^\d+$/.test(tokenValue);
-                    if (hasError)
+                    const hasNonNumericalErr = !/^\d+$/.test(tokenValue);
+                    const hasRemainderErr = tokenValue.length % 6 !== 0;
+                    if (hasNonNumericalErr)
                       callback('Passcode contains non-numerical value(s)');
+                    else if (hasRemainderErr)
+                      callback(
+                        'Each passcode has exactly 6 digits, please verify',
+                      );
                     callback();
                   },
                 },
