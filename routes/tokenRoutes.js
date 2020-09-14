@@ -66,7 +66,7 @@ module.exports = (app) => {
       const obj = {
         value: tokenValue,
         status: READY,
-        timeStamp: moment().format('DD/MM/YYYY hh:mm'),
+        timeStamp: moment(),
         teamNumber: req.body.teamNumber,
       };
       return Token.create(obj);

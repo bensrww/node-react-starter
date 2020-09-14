@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Row, Col, Typography, Button, Modal, Spin } from 'antd';
 import { tokenStatus } from '../../constants';
 import './ListToken.css';
-import { updateToken, getAllTokens } from '../../utils/helpers';
+import {
+  updateToken,
+  getAllTokens,
+  displayLocalTime,
+} from '../../utils/helpers';
 import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text, Paragraph } = Typography;
@@ -60,7 +64,7 @@ export default class ListToken extends Component {
                 {token.value}
               </Text>{' '}
               <div className="token-extra-info">
-                {token.status} {token.timeStamp}
+                {token.status} {displayLocalTime(token.timeStamp)}
               </div>
             </Paragraph>
           </Col>

@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import tokenService from '../services/tokenService';
 import { Modal } from 'antd';
 
@@ -48,4 +49,8 @@ export const getNumberOfTokens = async (teamNumber) => {
 export const clearAllToken = async (teamNumber) => {
   let res = await tokenService.deleteAllTokens(teamNumber);
   return res;
+};
+
+export const displayLocalTime = (momentStr) => {
+  return moment(momentStr).tz('Asia/Hong_Kong').format('DD/MM/YYYY hh:mm');
 };
