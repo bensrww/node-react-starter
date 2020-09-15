@@ -223,8 +223,7 @@ export class AddToken extends Component {
       <Form>
         <Spin spinning={spinning}>
           <Text strong className="top-note">
-            To insert multiple tokens, please <Text type="danger">don't</Text>{' '}
-            type enter, just type 123456654321 to insert 2 tokens, for example
+            ↓ Start here
           </Text>
           {/* <span>{this.renderNumbers()}</span> */}
           <this.InputBox />
