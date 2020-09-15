@@ -31,6 +31,17 @@ export class AddToken extends Component {
     };
   }
 
+  resetFields = () => {
+    const {
+      form: { resetFields },
+    } = this.props;
+    resetFields();
+    this.passcodeInput = [];
+    this.idToBeAdded = 0;
+    this.hasBeenAutoFocused = true;
+    id = 1;
+  };
+
   handleInsertToken = async () => {
     this.setState({ spinning: true });
     const {
@@ -56,6 +67,8 @@ export class AddToken extends Component {
       }
       this.setState({ spinning: false });
     });
+
+    this.resetFields();
   };
 
   deleteAllTokens = () => {
