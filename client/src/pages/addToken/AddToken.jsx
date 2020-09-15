@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Button, Input, Form, Modal, Spin, Row, Col, Typography } from 'antd';
+import {
+  Button,
+  Input,
+  Form,
+  Modal,
+  Spin,
+  Row,
+  Col,
+  Typography,
+  notification,
+} from 'antd';
 import tokenService from '../../services/tokenService';
 import './AddToken.css';
 import { TeamNumberContext } from '../../TeamNumberContext';
@@ -24,21 +34,28 @@ export class AddToken extends Component {
   handleInsertToken = async () => {
     this.setState({ spinning: true });
     const {
-      form: { validateFields },
+      form: { validateFields, getFieldValue },
     } = this.props;
+    console.log('handleInsertToken', getFieldValue('tokenValues'));
 
     validateFields(['tokenValues'], async (err, values) => {
+      console.log('validateFields');
       if (!err) {
         const { teamNumber } = this.context;
         let mergedString = '';
         values.tokenValues.forEach((val) => {
-          mergedString = mergedString.concat('', val);
+          if (val) mergedString = mergedString.concat('', val);
         });
 
         const hasNonNumericalErr = !/^\d+$/.test(mergedString);
         if (hasNonNumericalErr)
           console.log('Passcode contains non-numerical value(s)');
         await tokenService.insertTokens(mergedString, teamNumber);
+      } else {
+        notification.open({
+          message: 'Error',
+          description: 'Please input at least one valid passcode',
+        });
       }
       this.setState({ spinning: false });
     });
@@ -136,7 +153,7 @@ export class AddToken extends Component {
       <Form.Item>
         {getFieldDecorator(`tokenValues[${k}]`, {
           rules: [
-            { required: true, message: 'Please input passcode!' },
+            { required: k === 0, message: 'Please input passcode!' },
             {
               validator: (rule, value, callback) => {
                 const tokenValues = getFieldValue(`tokenValues[${k}]`);
