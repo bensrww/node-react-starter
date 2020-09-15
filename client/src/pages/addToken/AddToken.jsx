@@ -47,14 +47,11 @@ export class AddToken extends Component {
           if (val) mergedString = mergedString.concat('', val);
         });
 
-        const hasNonNumericalErr = !/^\d+$/.test(mergedString);
-        if (hasNonNumericalErr)
-          console.log('Passcode contains non-numerical value(s)');
         await tokenService.insertTokens(mergedString, teamNumber);
       } else {
         notification.open({
           message: 'Error',
-          description: 'Please input at least one valid passcode',
+          description: err,
         });
       }
       this.setState({ spinning: false });
@@ -157,10 +154,18 @@ export class AddToken extends Component {
             {
               validator: (rule, value, callback) => {
                 const tokenValues = getFieldValue(`tokenValues[${k}]`);
-                const hasRemainderErr = tokenValues.length % 6 !== 0;
-                if (hasRemainderErr)
-                  callback('Each passcode has exactly 6 digits, please verify');
-                callback();
+                if (tokenValues === undefined || tokenValues === '') callback();
+                else {
+                  const hasRemainderErr = tokenValues.length % 6 !== 0;
+                  const hasNonNumericalErr = !/^\d+$/.test(tokenValues);
+                  if (hasNonNumericalErr)
+                    callback('Passcode contains non-numerical value(s)');
+                  if (hasRemainderErr)
+                    callback(
+                      'Each passcode has exactly 6 digits, please verify',
+                    );
+                  callback();
+                }
               },
             },
           ],
