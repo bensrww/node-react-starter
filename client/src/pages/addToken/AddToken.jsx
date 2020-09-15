@@ -6,7 +6,7 @@ import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
-let id = 0;
+let id = 1;
 
 export class AddToken extends Component {
   constructor(props) {
@@ -97,13 +97,18 @@ export class AddToken extends Component {
   addTextBox = () => {
     const { form } = this.props;
     // can use data-binding to get
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(id++);
-    // can use data-binding to set
-    // important! notify form to detect changes
-    form.setFieldsValue({
-      keys: nextKeys,
-    });
+
+    const { keys, tokenValues } = form.getFieldsValue(['keys', 'tokenValues']);
+    console.log('keys: ', keys, 'tokens: ', tokenValues);
+    if (keys.length === tokenValues.length) {
+      // prevent adding more than one textbox for unknown reasons
+      const nextKeys = keys.concat(id++);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      form.setFieldsValue({
+        keys: nextKeys,
+      });
+    }
   };
 
   InputBox = () => {
@@ -135,8 +140,16 @@ export class AddToken extends Component {
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
-    const { getFieldDecorator, getFieldValue } = form;
+    const { getFieldDecorator, getFieldValue, getFieldsValue } = form;
     getFieldDecorator('keys', { initialValue: [0] });
+
+    const tokenValues = getFieldValue('tokenValues');
+    const lastTokenValue =
+      Array.isArray(tokenValues) && tokenValues[tokenValues.length - 1];
+    console.log('lastTokenValue', lastTokenValue);
+
+    if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
+
     return (
       <Form>
         <Spin spinning={spinning}>
