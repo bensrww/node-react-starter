@@ -166,12 +166,8 @@ export class AddToken extends Component {
                       else {
                         const hasRemainderErr = tokenValues.length % 6 !== 0;
                         const hasNonNumericalErr = !/^\d+$/.test(tokenValues);
-                        if (hasNonNumericalErr)
-                          callback('Passcode contains non-numerical value(s)');
-                        if (hasRemainderErr)
-                          callback(
-                            'Each passcode has exactly 6 digits, please verify',
-                          );
+                        if (hasNonNumericalErr) callback(' ');
+                        if (hasRemainderErr) callback(' ');
                         callback();
                       }
                     },
