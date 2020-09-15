@@ -11,13 +11,13 @@ let id = 1;
 export class AddToken extends Component {
   passcodeInput = [];
   idToBeAdded = 0;
+  hasBeenAutoFocused = true; // for auto focusing
 
   constructor(props) {
     super(props);
 
     this.state = {
       spinning: false,
-      hasBeenAutoFocused: null, // for auto focusing
     };
   }
 
@@ -120,9 +120,9 @@ export class AddToken extends Component {
       form.setFieldsValue({
         keys: nextKeys,
       });
-      this.setState({ hasBeenAutoFocused: true });
+      this.hasBeenAutoFocused = true;
     } else {
-      this.setState({ hasBeenAutoFocused: false });
+      this.hasBeenAutoFocused = false;
     }
   };
 
@@ -160,7 +160,7 @@ export class AddToken extends Component {
 
   render() {
     const { form } = this.props;
-    const { spinning, hasBeenAutoFocused } = this.state;
+    const { spinning } = this.state;
     const { getFieldDecorator, getFieldValue, getFieldsValue } = form;
     getFieldDecorator('keys', { initialValue: [0] });
 
@@ -170,9 +170,10 @@ export class AddToken extends Component {
     console.log('lastTokenValue', lastTokenValue);
 
     if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
-    if (!hasBeenAutoFocused) {
-      if (this.passcodeInput[this.idToBeAdded] && !hasBeenAutoFocused) {
+    if (!this.hasBeenAutoFocused) {
+      if (this.passcodeInput[this.idToBeAdded] && !this.hasBeenAutoFocused) {
         this.passcodeInput[this.idToBeAdded].focus();
+        this.hasBeenAutoFocused = true;
       }
     }
     return (
