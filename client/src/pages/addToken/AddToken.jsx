@@ -9,11 +9,15 @@ const { Text } = Typography;
 let id = 1;
 
 export class AddToken extends Component {
+  passcodeInput = [];
+  idToBeAdded = 0;
+
   constructor(props) {
     super(props);
 
     this.state = {
       spinning: false,
+      hasBeenAutoFocused: null, // for auto focusing
     };
   }
 
@@ -99,15 +103,26 @@ export class AddToken extends Component {
     // can use data-binding to get
 
     const { keys, tokenValues } = form.getFieldsValue(['keys', 'tokenValues']);
-    console.log('keys: ', keys, 'tokens: ', tokenValues);
+    console.log(
+      'keys: ',
+      keys,
+      'tokens: ',
+      tokenValues,
+      'refs: ',
+      this.passcodeInput,
+    );
     if (keys.length === tokenValues.length) {
       // prevent adding more than one textbox for unknown reasons
+      this.idToBeAdded = keys.length;
       const nextKeys = keys.concat(id++);
       // can use data-binding to set
       // important! notify form to detect changes
       form.setFieldsValue({
         keys: nextKeys,
       });
+      this.setState({ hasBeenAutoFocused: true });
+    } else {
+      this.setState({ hasBeenAutoFocused: false });
     }
   };
 
@@ -132,14 +147,20 @@ export class AddToken extends Component {
               },
             },
           ],
-        })(<Input />)}
+        })(
+          <Input
+            ref={(input) => {
+              this.passcodeInput[k] = input;
+            }}
+          />,
+        )}
       </Form.Item>
     ));
   };
 
   render() {
     const { form } = this.props;
-    const { spinning } = this.state;
+    const { spinning, hasBeenAutoFocused } = this.state;
     const { getFieldDecorator, getFieldValue, getFieldsValue } = form;
     getFieldDecorator('keys', { initialValue: [0] });
 
@@ -149,7 +170,11 @@ export class AddToken extends Component {
     console.log('lastTokenValue', lastTokenValue);
 
     if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
-
+    if (!hasBeenAutoFocused) {
+      if (this.passcodeInput[this.idToBeAdded] && !hasBeenAutoFocused) {
+        this.passcodeInput[this.idToBeAdded].focus();
+      }
+    }
     return (
       <Form>
         <Spin spinning={spinning}>
