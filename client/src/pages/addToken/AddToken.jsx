@@ -6,6 +6,8 @@ import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
+let id = 0;
+
 export class AddToken extends Component {
   constructor(props) {
     super(props);
@@ -16,21 +18,25 @@ export class AddToken extends Component {
   }
 
   handleInsertToken = async () => {
-    this.setState({
-      spinning: true,
-    });
+    this.setState({ spinning: true });
     const {
       form: { validateFields },
     } = this.props;
 
-    validateFields(['tokenValue'], async (err, values) => {
+    validateFields(['tokenValues'], async (err, values) => {
       if (!err) {
         const { teamNumber } = this.context;
-        await tokenService.insertTokens(values.tokenValue, teamNumber);
+        let mergedString = '';
+        values.tokenValues.forEach((val) => {
+          mergedString = mergedString.concat('', val);
+        });
+
+        const hasNonNumericalErr = !/^\d+$/.test(mergedString);
+        if (hasNonNumericalErr)
+          console.log('Passcode contains non-numerical value(s)');
+        await tokenService.insertTokens(mergedString, teamNumber);
       }
-      this.setState({
-        spinning: false,
-      });
+      this.setState({ spinning: false });
     });
   };
 
@@ -45,7 +51,7 @@ export class AddToken extends Component {
     const {
       form: { getFieldValue },
     } = this.props;
-    const fieldVal = getFieldValue('tokenValue');
+    const fieldVal = getFieldValue('tokenValues');
     if (!fieldVal) return <Text>Input tokens, then press Insert Tokens</Text>;
     const splitText = fieldVal.match(/.{1,6}/g);
     const colSpan = {
@@ -73,10 +79,64 @@ export class AddToken extends Component {
     );
   };
 
+  removeTextBox = (k) => {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter((key) => key !== k),
+    });
+  };
+
+  addTextBox = () => {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(id++);
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  };
+
+  InputBox = () => {
+    const {
+      form: { getFieldDecorator, getFieldValue },
+    } = this.props;
+    const keys = getFieldValue('keys');
+
+    return keys.map((k) => (
+      <Form.Item>
+        {getFieldDecorator(`tokenValues[${k}]`, {
+          rules: [
+            { required: true, message: 'Please input passcode!' },
+            {
+              validator: (rule, value, callback) => {
+                const tokenValues = getFieldValue(`tokenValues[${k}]`);
+                const hasRemainderErr = tokenValues.length % 6 !== 0;
+                if (hasRemainderErr)
+                  callback('Each passcode has exactly 6 digits, please verify');
+                callback();
+              },
+            },
+          ],
+        })(<Input />)}
+      </Form.Item>
+    ));
+  };
+
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
     const { getFieldDecorator, getFieldValue } = form;
+    getFieldDecorator('keys', { initialValue: [0] });
     return (
       <Form>
         <Spin spinning={spinning}>
@@ -84,28 +144,9 @@ export class AddToken extends Component {
             To insert multiple tokens, please <Text type="danger">don't</Text>{' '}
             type enter, just type 123456654321 to insert 2 tokens, for example
           </Text>
-          <span>{this.renderNumbers()}</span>
-          <Form.Item>
-            {getFieldDecorator('tokenValue', {
-              rules: [
-                { required: true, message: 'Please input passcode!' },
-                {
-                  validator: (rule, value, callback) => {
-                    const tokenValue = getFieldValue('tokenValue');
-                    const hasNonNumericalErr = !/^\d+$/.test(tokenValue);
-                    const hasRemainderErr = tokenValue.length % 6 !== 0;
-                    if (hasNonNumericalErr)
-                      callback('Passcode contains non-numerical value(s)');
-                    else if (hasRemainderErr)
-                      callback(
-                        'Each passcode has exactly 6 digits, please verify',
-                      );
-                    callback();
-                  },
-                },
-              ],
-            })(<Input.TextArea rows={8} />)}
-          </Form.Item>
+          {/* <span>{this.renderNumbers()}</span> */}
+          <this.InputBox />
+
           <Row gutter={[0, 24]}>
             <Col>
               <Button type="primary" onClick={this.handleInsertToken}>
