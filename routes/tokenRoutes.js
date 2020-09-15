@@ -24,7 +24,7 @@ module.exports = (app) => {
     const allReadyTokens = await Token.find({
       status: READY,
       teamNumber: req.query.teamNumber,
-    });
+    }).sort('sequence');
     const earliestToken = allReadyTokens[0];
     if (earliestToken) {
       earliestToken.status = PENDING;
