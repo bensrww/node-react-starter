@@ -39,7 +39,7 @@ export class AddToken extends Component {
     console.log('handleInsertToken', getFieldValue('tokenValues'));
 
     validateFields(['tokenValues'], async (err, values) => {
-      console.log('validateFields');
+      console.log('validateFields', err, values);
       if (!err) {
         const { teamNumber } = this.context;
         let mergedString = '';
@@ -49,9 +49,9 @@ export class AddToken extends Component {
 
         await tokenService.insertTokens(mergedString, teamNumber);
       } else {
-        notification.open({
-          message: 'Error',
-          description: err,
+        Modal.error({
+          title: 'Error',
+          content: 'Some token values may have been incorrect',
         });
       }
       this.setState({ spinning: false });
