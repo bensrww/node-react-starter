@@ -15,7 +15,8 @@
   background-color: white;
 }
 
-.token-col {
+.input-box {
+  width: 68px !important;
 }
 
 @media only screen and (max-width: 600px) {

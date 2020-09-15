@@ -145,39 +145,51 @@ export class AddToken extends Component {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
     const keys = getFieldValue('keys');
-
-    return keys.map((k) => (
-      <Form.Item>
-        {getFieldDecorator(`tokenValues[${k}]`, {
-          rules: [
-            { required: k === 0, message: 'Please input passcode!' },
-            {
-              validator: (rule, value, callback) => {
-                const tokenValues = getFieldValue(`tokenValues[${k}]`);
-                if (tokenValues === undefined || tokenValues === '') callback();
-                else {
-                  const hasRemainderErr = tokenValues.length % 6 !== 0;
-                  const hasNonNumericalErr = !/^\d+$/.test(tokenValues);
-                  if (hasNonNumericalErr)
-                    callback('Passcode contains non-numerical value(s)');
-                  if (hasRemainderErr)
-                    callback(
-                      'Each passcode has exactly 6 digits, please verify',
-                    );
-                  callback();
-                }
-              },
-            },
-          ],
-        })(
-          <Input
-            ref={(input) => {
-              this.passcodeInput[k] = input;
-            }}
-          />,
-        )}
-      </Form.Item>
-    ));
+    const colSpan = {
+      xs: 8,
+      md: 4,
+      xl: 2,
+    };
+    return (
+      <Row>
+        {keys.map((k) => (
+          <Col {...colSpan}>
+            <Form.Item>
+              {getFieldDecorator(`tokenValues[${k}]`, {
+                rules: [
+                  { required: k === 0, message: 'Please input passcode!' },
+                  {
+                    validator: (rule, value, callback) => {
+                      const tokenValues = getFieldValue(`tokenValues[${k}]`);
+                      if (tokenValues === undefined || tokenValues === '')
+                        callback();
+                      else {
+                        const hasRemainderErr = tokenValues.length % 6 !== 0;
+                        const hasNonNumericalErr = !/^\d+$/.test(tokenValues);
+                        if (hasNonNumericalErr)
+                          callback('Passcode contains non-numerical value(s)');
+                        if (hasRemainderErr)
+                          callback(
+                            'Each passcode has exactly 6 digits, please verify',
+                          );
+                        callback();
+                      }
+                    },
+                  },
+                ],
+              })(
+                <Input
+                  ref={(input) => {
+                    this.passcodeInput[k] = input;
+                  }}
+                  className="input-box"
+                />,
+              )}
+            </Form.Item>
+          </Col>
+        ))}
+      </Row>
+    );
   };
 
   render() {
