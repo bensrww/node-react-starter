@@ -215,6 +215,7 @@ export class AddToken extends Component {
     if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
     if (!this.hasBeenAutoFocused) {
       if (this.passcodeInput[this.idToBeAdded] && !this.hasBeenAutoFocused) {
+        console.log('auto focus', this.passcodeInput[this.idToBeAdded]);
         this.passcodeInput[this.idToBeAdded].focus();
         this.hasBeenAutoFocused = true;
       }
