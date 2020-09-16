@@ -1,28 +1,12 @@
 import React, { Component } from 'react';
-import {
-  Button,
-  Input,
-  Form,
-  Modal,
-  Spin,
-  Row,
-  Col,
-  Typography,
-  notification,
-} from 'antd';
+import { Button, Input, Form, Modal, Spin, Row, Col, Typography } from 'antd';
 import tokenService from '../../services/tokenService';
 import './AddToken.css';
 import { TeamNumberContext } from '../../TeamNumberContext';
 
 const { Text } = Typography;
 
-let id = 1;
-
 export class AddToken extends Component {
-  passcodeInput = [];
-  idToBeAdded = 0;
-  hasBeenAutoFocused = true; // for auto focusing
-
   constructor(props) {
     super(props);
 
@@ -31,44 +15,23 @@ export class AddToken extends Component {
     };
   }
 
-  resetFields = () => {
-    const {
-      form: { resetFields },
-    } = this.props;
-    resetFields();
-    this.passcodeInput = [];
-    this.idToBeAdded = 0;
-    this.hasBeenAutoFocused = true;
-    id = 1;
-  };
-
   handleInsertToken = async () => {
-    this.setState({ spinning: true });
+    this.setState({
+      spinning: true,
+    });
     const {
-      form: { validateFields, getFieldValue },
+      form: { validateFields },
     } = this.props;
-    console.log('handleInsertToken', getFieldValue('tokenValues'));
 
-    validateFields(['tokenValues'], async (err, values) => {
-      console.log('validateFields', err, values);
+    validateFields(['tokenValue'], async (err, values) => {
       if (!err) {
         const { teamNumber } = this.context;
-        let mergedString = '';
-        values.tokenValues.forEach((val) => {
-          if (val) mergedString = mergedString.concat('', val);
-        });
-
-        await tokenService.insertTokens(mergedString, teamNumber);
-      } else {
-        Modal.error({
-          title: 'Error',
-          content: 'Some token values may have been incorrect',
-        });
+        await tokenService.insertTokens(values.tokenValue, teamNumber);
       }
-      this.setState({ spinning: false });
+      this.setState({
+        spinning: false,
+      });
     });
-
-    this.resetFields();
   };
 
   deleteAllTokens = () => {
@@ -82,7 +45,7 @@ export class AddToken extends Component {
     const {
       form: { getFieldValue },
     } = this.props;
-    const fieldVal = getFieldValue('tokenValues');
+    const fieldVal = getFieldValue('tokenValue');
     if (!fieldVal) return <Text>Input tokens, then press Insert Tokens</Text>;
     const splitText = fieldVal.match(/.{1,6}/g);
     const colSpan = {
@@ -110,124 +73,39 @@ export class AddToken extends Component {
     );
   };
 
-  removeTextBox = (k) => {
-    const { form } = this.props;
-    // can use data-binding to get
-    const keys = form.getFieldValue('keys');
-    // We need at least one passenger
-    if (keys.length === 1) {
-      return;
-    }
-
-    // can use data-binding to set
-    form.setFieldsValue({
-      keys: keys.filter((key) => key !== k),
-    });
-  };
-
-  addTextBox = () => {
-    const { form } = this.props;
-    // can use data-binding to get
-
-    const { keys, tokenValues } = form.getFieldsValue(['keys', 'tokenValues']);
-    console.log(
-      'keys: ',
-      keys,
-      'tokens: ',
-      tokenValues,
-      'refs: ',
-      this.passcodeInput,
-    );
-    if (keys.length === tokenValues.length) {
-      // prevent adding more than one textbox for unknown reasons
-      this.idToBeAdded = keys.length;
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      form.setFieldsValue({
-        keys: nextKeys,
-      });
-      this.hasBeenAutoFocused = true;
-    } else {
-      this.hasBeenAutoFocused = false;
-    }
-  };
-
-  InputBox = () => {
-    const {
-      form: { getFieldDecorator, getFieldValue },
-    } = this.props;
-    const keys = getFieldValue('keys');
-    const colSpan = {
-      xs: 8,
-      md: 4,
-      xl: 2,
-    };
-    return (
-      <Row>
-        {keys.map((k) => (
-          <Col {...colSpan}>
-            <Form.Item>
-              {getFieldDecorator(`tokenValues[${k}]`, {
-                rules: [
-                  { required: k === 0, message: 'Please input passcode!' },
-                  {
-                    validator: (rule, value, callback) => {
-                      const tokenValues = getFieldValue(`tokenValues[${k}]`);
-                      if (tokenValues === undefined || tokenValues === '')
-                        callback();
-                      else {
-                        const hasRemainderErr = tokenValues.length % 6 !== 0;
-                        const hasNonNumericalErr = !/^\d+$/.test(tokenValues);
-                        if (hasNonNumericalErr) callback(' ');
-                        if (hasRemainderErr) callback(' ');
-                        callback();
-                      }
-                    },
-                  },
-                ],
-              })(
-                <Input
-                  ref={(input) => {
-                    this.passcodeInput[k] = input;
-                  }}
-                  className="input-box"
-                />,
-              )}
-            </Form.Item>
-          </Col>
-        ))}
-      </Row>
-    );
-  };
-
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
-    const { getFieldDecorator, getFieldValue, getFieldsValue } = form;
-    getFieldDecorator('keys', { initialValue: [0] });
-
-    const tokenValues = getFieldValue('tokenValues');
-    const lastTokenValue =
-      Array.isArray(tokenValues) && tokenValues[tokenValues.length - 1];
-    console.log('lastTokenValue', lastTokenValue);
-
-    if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
-    if (!this.hasBeenAutoFocused) {
-      if (this.passcodeInput[this.idToBeAdded] && !this.hasBeenAutoFocused) {
-        this.passcodeInput[this.idToBeAdded].focus();
-        this.hasBeenAutoFocused = true;
-      }
-    }
+    const { getFieldDecorator, getFieldValue } = form;
     return (
       <Form>
         <Spin spinning={spinning}>
           <Text strong className="top-note">
-            ↓ Start here
+            To insert multiple tokens, please <Text type="danger">don't</Text>{' '}
+            type enter, just type 123456654321 to insert 2 tokens, for example
           </Text>
-          {/* <span>{this.renderNumbers()}</span> */}
-          <this.InputBox />
-
+          <span>{this.renderNumbers()}</span>
+          <Form.Item>
+            {getFieldDecorator('tokenValue', {
+              rules: [
+                { required: true, message: 'Please input passcode!' },
+                {
+                  validator: (rule, value, callback) => {
+                    const tokenValue = getFieldValue('tokenValue');
+                    const hasNonNumericalErr = !/^\d+$/.test(tokenValue);
+                    const hasRemainderErr = tokenValue.length % 6 !== 0;
+                    if (hasNonNumericalErr)
+                      callback('Passcode contains non-numerical value(s)');
+                    else if (hasRemainderErr)
+                      callback(
+                        'Each passcode has exactly 6 digits, please verify',
+                      );
+                    callback();
+                  },
+                },
+              ],
+            })(<Input.TextArea rows={8} />)}
+          </Form.Item>
           <Row gutter={[0, 24]}>
             <Col>
               <Button type="primary" onClick={this.handleInsertToken}>

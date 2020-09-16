@@ -1,9 +1,6 @@
 .top-note {
   display: block;
   margin-bottom: 20px;
-  text-align: left;
-  margin-left: 36px;
-  color: red !important;
 }
 
 .token-text {
@@ -18,8 +15,7 @@
   background-color: white;
 }
 
-.input-box {
-  width: 72px !important;
+.token-col {
 }
 
 @media only screen and (max-width: 600px) {
