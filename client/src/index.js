@@ -6,11 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import { TEAM_NUMBER } from './constants';
 
-const { TEAM_2, TEAM_3 } = TEAM_NUMBER;
+const { TEAM_1, TEAM_2, TEAM_3 } = TEAM_NUMBER;
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
+        <Route exact path="/t1">
+          <App teamNumber={TEAM_1} />
+        </Route>
         <Route exact path="/t2">
           <App teamNumber={TEAM_2} />
         </Route>

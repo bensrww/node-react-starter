@@ -7,6 +7,7 @@ export const tokenStatus = {
 };
 
 export const TEAM_NUMBER = {
+  TEAM_1: 1,
   TEAM_2: 2,
   TEAM_3: 3,
 };
