@@ -33,7 +33,28 @@ class App extends React.Component {
       team: null,
       activeTabKey: 'getTokens',
     };
+
+    this.setBackgroundClassName();
   }
+
+  backgroundClassName = '';
+
+  setBackgroundClassName = () => {
+    switch (this.props.teamNumber) {
+      case TEAM_NUMBER.TEAM_1:
+        this.backgroundClassName = 't1-background';
+        break;
+      case TEAM_NUMBER.TEAM_2:
+        this.backgroundClassName = 't2-background';
+        break;
+      case TEAM_NUMBER.TEAM_3:
+        this.backgroundClassName = 't3-background';
+        break;
+
+      default:
+        break;
+    }
+  };
 
   handleTabChange = (activeKey) => {
     if (activeKey === 'listOfTokens') {
@@ -58,13 +79,9 @@ class App extends React.Component {
   };
 
   render() {
-    const backgroundClassName =
-      this.props.teamNumber === TEAM_NUMBER.TEAM_2
-        ? 't2-background'
-        : 't3-background';
     return (
       <TeamNumberContext.Provider value={{ teamNumber: this.props.teamNumber }}>
-        <Layout className={`top-layer ${backgroundClassName}`}>
+        <Layout className={`top-layer ${this.backgroundClassName}`}>
           <Content className="body-layer" style={{ padding: '0 50px' }}>
             <div className="site-layout-content">
               <Tabs

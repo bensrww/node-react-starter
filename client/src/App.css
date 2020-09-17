@@ -62,6 +62,10 @@
   font-size: 100px;
 }
 
+.t1-background {
+  background-image: url(./asset/t1Background.png);
+}
+
 .t2-background {
   background-image: url(./asset/t2Background.png);
 }
