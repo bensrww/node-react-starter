@@ -210,7 +210,16 @@ export class AddToken extends Component {
     const tokenValues = getFieldValue('tokenValues');
     const lastTokenValue =
       Array.isArray(tokenValues) && tokenValues[tokenValues.length - 1];
-    console.log('lastTokenValue', lastTokenValue);
+    console.log(
+      'lastTokenValue',
+      lastTokenValue,
+      'hasBeenAutoFocused',
+      this.hasBeenAutoFocused,
+      'passcodeInput',
+      this.passcodeInput,
+      'idToBeAdded',
+      this.idToBeAdded,
+    );
 
     if (lastTokenValue && lastTokenValue.length === 6) this.addTextBox();
     if (!this.hasBeenAutoFocused) {
