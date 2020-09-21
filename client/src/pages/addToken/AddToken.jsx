@@ -203,7 +203,9 @@ export class AddToken extends Component {
     const { keys, tokenValues } = form.getFieldsValue(['keys', 'tokenValues']);
 
     if (lastTokenValue === undefined) {
+      console.log('auto focus before', lastTokenValue, this.hasBeenAutoFocused);
       this.hasBeenAutoFocused = false;
+      console.log('auto focus after', this.hasBeenAutoFocused);
     } else this.hasBeenAutoFocused = true;
   };
 
