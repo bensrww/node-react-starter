@@ -147,9 +147,6 @@ export class AddToken extends Component {
       form.setFieldsValue({
         keys: nextKeys,
       });
-      this.hasBeenAutoFocused = true;
-    } else {
-      this.hasBeenAutoFocused = false;
     }
   };
 
@@ -201,6 +198,15 @@ export class AddToken extends Component {
     );
   };
 
+  checkAutoFocus = (lastTokenValue) => {
+    const { form } = this.props;
+    const { keys, tokenValues } = form.getFieldsValue(['keys', 'tokenValues']);
+
+    if (lastTokenValue === undefined) {
+      this.hasBeenAutoFocused = false;
+    } else this.hasBeenAutoFocused = true;
+  };
+
   render() {
     const { form } = this.props;
     const { spinning } = this.state;
@@ -229,6 +235,8 @@ export class AddToken extends Component {
         this.hasBeenAutoFocused = true;
       }
     }
+
+    this.checkAutoFocus(lastTokenValue);
     return (
       <Form>
         <Spin spinning={spinning}>
